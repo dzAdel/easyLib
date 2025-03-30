@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\easyLib.Core\easyLib.Core.csproj" />
+    <ProjectReference Include="..\easyLib.Debug\easyLib.Debug.csproj" />
+    <ProjectReference Include="..\easyLib.Test\easyLib.Test.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="easyLib.Debug.DebugHelper">
+      <Static>True</Static>
+    </Using>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Core\ADT\" />
+    <Folder Include="Core\Disposables\" />
+    <Folder Include="Core\IO\" />
+    <Folder Include="Test\" />
+  </ItemGroup>
+
+</Project>
