@@ -20,7 +20,7 @@ public static class DebugHelper
     {
         if (!condition)
         {
-            StringBuilder sb = new("\n#Assertion failure:\n");
+            StringBuilder sb = new("\n# Assertion failure:\n");
 
             if (message != null)
                 sb.Append("#\t").Append(message).AppendLine();
@@ -54,7 +54,7 @@ public static class DebugHelper
     {
         if (!condition)
         {
-            string msg = $"\n#Precondition failure:\n" +
+            string msg = $"\n# Precondition failure:\n" +
                 $"#\tMethod: {callerName}\n" +
                 $"#\tFile: {filePath}\n" +
                 $"#\tLine: {lineNber}\n" +
@@ -82,7 +82,7 @@ public static class DebugHelper
     {
         if (!condition)
         {
-            string msg = $"\n#Postcondition failure:\n" +
+            string msg = $"\n# Postcondition failure:\n" +
                 $"#\tMethod: {callerName}\n" +
                 $"#\tFile: {filePath}\n" +
                 $"#\tLine: {lineNber}\n" +
