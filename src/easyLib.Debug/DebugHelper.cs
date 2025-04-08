@@ -20,33 +20,31 @@ public static class DebugHelper
     {
         if (!condition)
         {
-            StringBuilder sb = new("\n# Assertion failure:\n");
+            StringBuilder sb = new("\nAssertion failure: ");
 
             if (message != null)
-                sb.Append("#\t").Append(message).AppendLine();
+                sb.Append(message.TrimEnd());
 
-            sb.Append("#\tMethod: ").Append(callerName).AppendLine();
-            sb.Append("#\tFile: ").Append(filePath).AppendLine();
-            sb.Append("#\tLine: ").Append(lineNber).AppendLine();
-            sb.Append("#\tExpression: ").Append(condStr);
+            sb.AppendLine();
+
+            sb.Append("\tMethod: ").Append(callerName).AppendLine();
+            sb.Append("\tFile: ").Append(filePath).AppendLine();
+            sb.Append("\tLine: ").Append(lineNber).AppendLine();
+            sb.Append("\tExpression: ").Append(condStr);
 
             string msg = sb.ToString();
+            System.Diagnostics.Debug.AutoFlush = true;
 
             if (System.Diagnostics.Debugger.IsAttached)
-            {
-                System.Diagnostics.Debug.WriteLine(msg);
-                System.Diagnostics.Debugger.Break();
-            }
-            else
-            {
                 System.Diagnostics.Debug.Fail(msg);
+            else
                 throw new AssertionFailedException(msg);
-            }
         }
     }
 
     [System.Diagnostics.Conditional("DEBUG")]
     public static void require([DoesNotReturnIf(false)] bool condition,
+                              string? message = null,
                               [CallerMemberName] string? callerName = null,
                               [CallerFilePath] string? filePath = null,
                               [CallerLineNumber] int lineNber = 0,
@@ -54,27 +52,30 @@ public static class DebugHelper
     {
         if (!condition)
         {
-            string msg = $"\n# Precondition failure:\n" +
-                $"#\tMethod: {callerName}\n" +
-                $"#\tFile: {filePath}\n" +
-                $"#\tLine: {lineNber}\n" +
-                $"\tExpression: {condStr}";
+            StringBuilder sb = new("\nPrecondition failure: ");
+
+            if (message != null)
+                sb.Append(message.TrimEnd());
+
+            sb.AppendLine();
+
+            sb.Append("\tMethod: ").Append(callerName).AppendLine();
+            sb.Append("\tFile: ").Append(filePath).AppendLine();
+            sb.Append("\tLine: ").Append(lineNber).AppendLine();
+            sb.Append("\tExpression: ").Append(condStr);
+
+            string msg = sb.ToString();
 
             if (System.Diagnostics.Debugger.IsAttached)
-            {
-                System.Diagnostics.Debug.WriteLine(msg);
-                System.Diagnostics.Debugger.Break();
-            }
-            else
-            {
                 System.Diagnostics.Debug.Fail(msg);
+            else
                 throw new PreconditionFailedException(msg);
-            }
         }
     }
 
     [System.Diagnostics.Conditional("DEBUG")]
     public static void ensure([DoesNotReturnIf(false)] bool condition,
+                              string? message = null,
                               [CallerMemberName] string? callerName = null,
                               [CallerFilePath] string? filePath = null,
                               [CallerLineNumber] int lineNber = 0,
@@ -82,22 +83,24 @@ public static class DebugHelper
     {
         if (!condition)
         {
-            string msg = $"\n# Postcondition failure:\n" +
-                $"#\tMethod: {callerName}\n" +
-                $"#\tFile: {filePath}\n" +
-                $"#\tLine: {lineNber}\n" +
-                $"\tExpression: {condStr}";
+            StringBuilder sb = new("\nPostcondition failure: ");
+
+            if (message != null)
+                sb.Append(message.TrimEnd());
+
+            sb.AppendLine();
+
+            sb.Append("\tMethod: ").Append(callerName).AppendLine();
+            sb.Append("\tFile: ").Append(filePath).AppendLine();
+            sb.Append("\tLine: ").Append(lineNber).AppendLine();
+            sb.Append("\tExpression: ").Append(condStr);
+
+            string msg = sb.ToString();
 
             if (System.Diagnostics.Debugger.IsAttached)
-            {
-                System.Diagnostics.Debug.WriteLine(msg);
-                System.Diagnostics.Debugger.Break();
-            }
-            else
-            {
                 System.Diagnostics.Debug.Fail(msg);
-                throw new PostconditionFailedException(msg);
-            }
+            else
+                throw new PreconditionFailedException(msg);
         }
     }
 
@@ -106,12 +109,15 @@ public static class DebugHelper
     {
         StringBuilder sb = new();
 
-        sb.AppendLine().Append(msg).AppendLine();
+        sb.AppendLine();
+
+        if (msg != null)
+            sb.Append(msg.TrimEnd()).AppendLine();
 
         for (int i = 0; i < lines.Length; ++i)
         {
-            string str = MessageFormatter.Format(0, lines[i]);
-            sb.AppendLine(str);
+            string str = MessageFormatter.Format(1, lines[i]);
+            sb.Append(str);
         }
 
         System.Diagnostics.Debug.Write(sb.ToString());
@@ -130,7 +136,7 @@ public static class DebugHelper
 
             StringBuilder sb = new();
             sb.AppendLine()
-              .Append(message)
+              .Append(message.TrimEnd())
               .AppendLine()
               .AppendLine($"\tFile; {filePath}")
               .AppendLine($"\tMethod: {callerName}")
@@ -152,8 +158,8 @@ public static class DebugHelper
 
                 if (ex.StackTrace != null)
                 {
-                    string str = MessageFormatter.Format(indentCount, "Stack Trace:\n" + ex.StackTrace);
-                    sb.AppendLine(str);
+                    string str = MessageFormatter.Format(indentCount, "Stack Trace:" + ex.StackTrace);
+                    sb.Append(str);
                 }
 
                 if (ex.InnerException != null)

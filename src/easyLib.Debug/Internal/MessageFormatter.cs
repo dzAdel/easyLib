@@ -19,7 +19,7 @@ static class MessageFormatter
 
         foreach (string str in msg)
         {
-            string[] lines = str.Split('\n', StringSplitOptions.TrimEntries);
+            string[] lines = str.Split(Environment.NewLine, StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
 
             if (lines.Length > 0)
             {
