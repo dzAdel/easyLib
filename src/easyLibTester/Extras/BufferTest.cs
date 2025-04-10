@@ -1,10 +1,12 @@
 ﻿using easyLib.Extensions;
+using easyLib.Extras.IO;
 using easyLib.IO;
 using easyLib.Test;
+using Buffer = easyLib.Extras.IO.Buffer;
 
-namespace easyLibTester.Core.IO;
+namespace easyLibTester.Extras;
 
-sealed class BufferTest : UnitTest<easyLib.IO.Buffer>
+sealed class BufferTest : UnitTest<Buffer>
 {
     public BufferTest() :
         base(nameof(BufferTest))
@@ -29,7 +31,7 @@ sealed class BufferTest : UnitTest<easyLib.IO.Buffer>
         TestGetWriter();
     }
 
-    protected override IInvariantTester DefineInvariant(easyLib.IO.Buffer obj, IInvariantTester invTester) =>
+    protected override IInvariantTester DefineInvariant(Buffer obj, IInvariantTester invTester) =>
         invTester[obj.Capacity >= 0]
         [obj.Capacity <= Array.MaxLength]
         [obj.Count >= 0]
@@ -43,7 +45,7 @@ sealed class BufferTest : UnitTest<easyLib.IO.Buffer>
     void TestGetWriter()
     {
         //GetWriter(ByteOrder)
-        using easyLib.IO.Buffer buff = new()
+        using Buffer buff = new()
         {
             SampleFactory.CreateBytes().Take(SampleFactory.NextByte)
         };
@@ -72,7 +74,7 @@ sealed class BufferTest : UnitTest<easyLib.IO.Buffer>
     void TestGetReader()
     {
         //GetReader(ByteOrder)
-        using easyLib.IO.Buffer buff = new()
+        using Buffer buff = new()
         {
             SampleFactory.CreateBytes().Take(SampleFactory.NextByte)
         };
@@ -101,7 +103,7 @@ sealed class BufferTest : UnitTest<easyLib.IO.Buffer>
     {
         //CopyFrom(ReadOnlySpan<byte>, int)
         int count = SampleFactory.NextByte;
-        using easyLib.IO.Buffer buff = new()
+        using Buffer buff = new()
         {
             SampleFactory.CreateBytes().Take(SampleFactory.NextByte)
         };
@@ -117,7 +119,7 @@ sealed class BufferTest : UnitTest<easyLib.IO.Buffer>
         //CopyFrom(IReadOnlyBuffer, int, int, int)
         int ndxFrom = SampleFactory.NextByte;
         count = SampleFactory.CreateInts(0, buff.Count + 1).First();
-        using easyLib.IO.Buffer buff2 = new()
+        using Buffer buff2 = new()
         {
             SampleFactory.CreateBytes().Take(ndxFrom + count)
         };
@@ -146,7 +148,7 @@ sealed class BufferTest : UnitTest<easyLib.IO.Buffer>
     void TestPut()
     {
         int ndxTo = SampleFactory.NextByte;
-        using easyLib.IO.Buffer buff = new()
+        using Buffer buff = new()
         {
             SampleFactory.CreateBytes().Take(SampleFactory.NextByte + ndxTo)
         };
@@ -196,7 +198,7 @@ sealed class BufferTest : UnitTest<easyLib.IO.Buffer>
         int count = SampleFactory.NextByte;
         byte[] bytes = new byte[count];
 
-        using easyLib.IO.Buffer buff = new()
+        using Buffer buff = new()
         {
             SampleFactory.CreateBytes().Take(SampleFactory.NextByte + ndxFrom + count)
         };
@@ -208,7 +210,7 @@ sealed class BufferTest : UnitTest<easyLib.IO.Buffer>
         Ensure(buff.Skip(ndxFrom).Take(count).SequenceEqual(bytes));
 
         //CopyTo(Buffer, int, int, int)
-        using easyLib.IO.Buffer buff1 = new()
+        using Buffer buff1 = new()
         {
             SampleFactory.CreateBytes().Take(SampleFactory.NextByte)
         };
@@ -228,7 +230,7 @@ sealed class BufferTest : UnitTest<easyLib.IO.Buffer>
 
     void TestIndexer()
     {
-        using easyLib.IO.Buffer buff = new();
+        using Buffer buff = new();
         byte b = SampleFactory.NextByte;
         buff[0] = b;
         TestInvariant(buff);
@@ -247,7 +249,7 @@ sealed class BufferTest : UnitTest<easyLib.IO.Buffer>
     void TestAsReadOnlySpan()
     {
         //AsReadOnlySpan()
-        using easyLib.IO.Buffer buff = new()
+        using Buffer buff = new()
         {
             SampleFactory.CreateBytes().Take(SampleFactory.NextByte)
         };
@@ -268,7 +270,7 @@ sealed class BufferTest : UnitTest<easyLib.IO.Buffer>
     void TestAsSpan()
     {
         //AsSpan()
-        using easyLib.IO.Buffer buff = new()
+        using Buffer buff = new()
         {
             SampleFactory.CreateBytes().Take(SampleFactory.NextByte)
         };
@@ -292,7 +294,7 @@ sealed class BufferTest : UnitTest<easyLib.IO.Buffer>
         int[] ints = SampleFactory.CreateInts().Take(count).ToArray();
         List<byte> revBytes = new();
         int off = SampleFactory.NextByte;
-        using easyLib.IO.Buffer buff = new()
+        using Buffer buff = new()
         {
             SampleFactory.CreateBytes().Take(off)
         };
@@ -315,7 +317,7 @@ sealed class BufferTest : UnitTest<easyLib.IO.Buffer>
         int count = SampleFactory.NextByte;
         byte[] bytes = SampleFactory.CreateBytes().Take(count).ToArray();
         int ndx = SampleFactory.NextByte;
-        using easyLib.IO.Buffer buff = new()
+        using Buffer buff = new()
         {
             SampleFactory.CreateBytes().Take(ndx),
             bytes,
@@ -330,7 +332,7 @@ sealed class BufferTest : UnitTest<easyLib.IO.Buffer>
 
     void TestClear()
     {
-        using easyLib.IO.Buffer buff = new()
+        using Buffer buff = new()
         {
             SampleFactory.CreateBytes().Take(SampleFactory.NextByte)
         };
@@ -342,7 +344,7 @@ sealed class BufferTest : UnitTest<easyLib.IO.Buffer>
 
     void TestStrip()
     {
-        using easyLib.IO.Buffer buff = new()
+        using Buffer buff = new()
         {
             SampleFactory.CreateBytes().Take(SampleFactory.NextByte + 1)
         };
@@ -358,7 +360,7 @@ sealed class BufferTest : UnitTest<easyLib.IO.Buffer>
     void TestAdd()
     {
         //Add(byte)
-        using easyLib.IO.Buffer buff = new(1);
+        using Buffer buff = new(1);
         byte b = SampleFactory.NextByte;
         buff.Add(b);
         TestInvariant(buff);
@@ -368,7 +370,7 @@ sealed class BufferTest : UnitTest<easyLib.IO.Buffer>
         Ensure(buff[0] == b);
 
         //Add(IEnumerable<byte>)
-        using easyLib.IO.Buffer buff2 = new();
+        using Buffer buff2 = new();
         byte[] bytes = SampleFactory.CreateBytes().Take(SampleFactory.NextByte).ToArray();
         int n = buff2.Add(bytes);
         TestInvariant(buff2);
@@ -385,36 +387,36 @@ sealed class BufferTest : UnitTest<easyLib.IO.Buffer>
         Ensure(bytes2.SequenceEqual(buff2.Skip(bytes.Length)));
 
         int count = SampleFactory.NextByte;
-        using easyLib.IO.Buffer buff3 = new(count);
+        using Buffer buff3 = new(count);
         EnsureThrow<OverflowException>(() => buff3.Add(SampleFactory.CreateBytes().Take(count + 1)));
     }
 
     void TestConstruction()
     {
         int maxLen = SampleFactory.NextByte;
-        using easyLib.IO.Buffer buff1 = new(maxLen, SampleFactory.NextBool);
+        using Buffer buff1 = new(maxLen, SampleFactory.NextBool);
 
         Ensure(buff1.Capacity == maxLen);
         Ensure(buff1.IsEmpty);
         TestInvariant(buff1);
 
-        using easyLib.IO.Buffer buff2 = new();
+        using Buffer buff2 = new();
         Ensure(buff2.Capacity == Array.MaxLength);
         Ensure(buff2.IsEmpty);
         TestInvariant(buff2);
 
-        using easyLib.IO.Buffer buff3 = new(buff1);
+        using Buffer buff3 = new(buff1);
         Ensure(buff3.Capacity == buff1.Capacity);
         Ensure(buff3.Count == buff1.Count);
         TestInvariant(buff3);
 
-        using easyLib.IO.Buffer buff4 = new(0, SampleFactory.NextBool);
+        using Buffer buff4 = new(0, SampleFactory.NextBool);
         Ensure(buff4.Capacity == 0);
         Ensure(buff4.IsEmpty == true);
         Ensure(buff4.IsFull == true);
         TestInvariant(buff4);
 
-        using easyLib.IO.Buffer buff5 = new(Array.MaxLength, SampleFactory.NextBool);
+        using Buffer buff5 = new(Array.MaxLength, SampleFactory.NextBool);
         Ensure(buff5.Capacity == Array.MaxLength);
         Ensure(buff5.IsEmpty);
         TestInvariant(buff5);

@@ -1,13 +1,8 @@
 ﻿using easyLib.Disposables;
-using easyLib.IO;
+using easyLib.Extras.IO;
 using easyLib.Test;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace easyLibTester.Core.IO;
+namespace easyLibTester.Extras;
 
 sealed class LRUFileStreamTest : UnitTest<LRUFileStream>
 {

@@ -5,21 +5,22 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-		<RootNamespace>easyLib</RootNamespace>
-		<AssemblyVersion>2.1.0.0</AssemblyVersion>
+		<RootNamespace>easyLib.Extras</RootNamespace>
+		<AssemblyVersion>0.1.0.0</AssemblyVersion>
 		<FileVersion>$(AssemblyVersion)</FileVersion>
 		<Authors>chez.adel@outlook.fr</Authors>
-		<Copyright>chez.adel@outlook.fr (c) 2014-2025</Copyright>
+		<Copyright>chez.adel@outlook.fr (c) 2025</Copyright>
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\easyLib.Debug\easyLib.Debug.csproj" />
+		<ProjectReference Include="..\easyLib.Core\easyLib.Core.csproj" />
+		<ProjectReference Include="..\easyLib.Debug\easyLib.Debug.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Using Include="easyLib.Debug.DebugHelper">
-	    <Static>True</Static>
-	  </Using>
+		<Using Include="easyLib.Debug.DebugHelper">
+			<Static>True</Static>
+		</Using>
 	</ItemGroup>
 
 </Project>

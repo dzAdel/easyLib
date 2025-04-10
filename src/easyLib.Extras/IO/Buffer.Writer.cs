@@ -1,4 +1,6 @@
-﻿namespace easyLib.IO;
+﻿using easyLib.IO;
+
+namespace easyLib.Extras.IO;
 
 partial class Buffer
 {
@@ -531,7 +533,7 @@ partial class Buffer
             m_pos += size;
         }
 
-        public void WriteChar(char c) => WriteUShort((ushort)c);
+        public void WriteChar(char c) => WriteUShort(c);
 
         public void WriteChars(ReadOnlySpan<char> chars)
         {

@@ -1,4 +1,6 @@
-﻿namespace easyLib.IO;
+﻿using easyLib.IO;
+
+namespace easyLib.Extras.IO;
 
 partial class Buffer
 {

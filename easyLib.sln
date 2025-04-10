@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35919.96 d17.13
+VisualStudioVersion = 17.13.35919.96
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "easyLib.Debug", "src\easyLib.Debug\easyLib.Debug.csproj", "{2A053431-27B4-4D6E-8A7A-81F03972D4AD}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "easyLib.Test", "src\easyLib.Test\easyLib.Test.csproj", "{279BB6B5-5556-438E-AB3A-589898170729}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "easyLibTester", "src\easyLibTester\easyLibTester.csproj", "{EFD6960C-3742-4199-B8F1-9DAEEB17DFB2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "easyLib.Extras", "src\easyLib.Extras\easyLib.Extras.csproj", "{0D5111C0-89F8-477C-ADF0-632F436EC74C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{EFD6960C-3742-4199-B8F1-9DAEEB17DFB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EFD6960C-3742-4199-B8F1-9DAEEB17DFB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EFD6960C-3742-4199-B8F1-9DAEEB17DFB2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D5111C0-89F8-477C-ADF0-632F436EC74C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D5111C0-89F8-477C-ADF0-632F436EC74C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D5111C0-89F8-477C-ADF0-632F436EC74C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D5111C0-89F8-477C-ADF0-632F436EC74C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

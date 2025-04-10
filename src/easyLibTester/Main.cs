@@ -4,6 +4,7 @@ using easyLibTester.Core.ADT;
 using easyLibTester.Core.Disposables;
 using easyLibTester.Core.Extensions;
 using easyLibTester.Core.IO;
+using easyLibTester.Extras;
 using easyLibTester.Test;
 
 TestManager testManager = new();
@@ -26,12 +27,15 @@ testManager.AddTest(new ListExTest());
 testManager.AddTest(new MultiByteIntCodecTest());
 testManager.AddTest(new BinaryStreamReaderWriterTest());
 testManager.AddTest(new RandomAccessStreamReaderWriterTest());
-testManager.AddTest(new BufferTest());
-testManager.AddTest(new BufferReaderWriterTest());
-testManager.AddTest(new LRUFileStreamTest());
+
 
 //easyLib.ADT
 testManager.AddTest(new ForwardListTest());
+
+//easyLib.Extras
+testManager.AddTest(new BufferTest());
+testManager.AddTest(new BufferReaderWriterTest());
+testManager.AddTest(new LRUFileStreamTest());
 
 testManager.BreakOnFailure = true;
 testManager.Execute(SampleFactory.NextByte + 1);

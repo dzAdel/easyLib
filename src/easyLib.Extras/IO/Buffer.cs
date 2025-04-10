@@ -1,9 +1,10 @@
-﻿using System.Collections;
+﻿using easyLib.IO;
+using System.Collections;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace easyLib.IO;
+namespace easyLib.Extras.IO;
 
 public sealed partial class Buffer : IReadOnlyBuffer, IDestructible
 {

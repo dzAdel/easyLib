@@ -12,6 +12,7 @@
   <ItemGroup>
     <ProjectReference Include="..\easyLib.Core\easyLib.Core.csproj" />
     <ProjectReference Include="..\easyLib.Debug\easyLib.Debug.csproj" />
+    <ProjectReference Include="..\easyLib.Extras\easyLib.Extras.csproj" />
     <ProjectReference Include="..\easyLib.Test\easyLib.Test.csproj" />
   </ItemGroup>
 

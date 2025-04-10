@@ -1,12 +1,14 @@
 ﻿using easyLib.Extensions;
+using easyLib.Extras.IO;
 using easyLib.IO;
 using easyLib.Test;
+using Buffer = easyLib.Extras.IO.Buffer;
 
-namespace easyLibTester.Core.IO;
+namespace easyLibTester.Extras;
 
 sealed class BufferReaderWriterTest : UnitTest
 {
-    easyLib.IO.Buffer? m_buff;
+    Buffer? m_buff;
     ByteOrder m_endianness;
 
     public BufferReaderWriterTest() :
@@ -584,7 +586,7 @@ sealed class BufferReaderWriterTest : UnitTest
         Ensure(writer.Length <= Buffer.Count);
     }
 
-    easyLib.IO.Buffer Buffer => m_buff ?? new();
+    Buffer Buffer => m_buff ?? new();
 
 }
 
