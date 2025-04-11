@@ -3,10 +3,10 @@ classDiagram
 class IReader {<<interface>>}
 class IBinaryReader {<<interface>>}
 class IRandomAccessReader {<<interface>>}
-class IBufferReader {<<interface>>}
 class BinaryStreamReader
 class RandomAccessStreamReader
 class ITextReader {<<interface>>}
+class ITextStreamReader {<<interface>>}
 class TextStreamReader
 class IStringReader {<<interface>>}
 class StringReader
@@ -14,92 +14,90 @@ IBinaryReader <|.. BinaryStreamReader
 IRandomAccessReader <|.. RandomAccessStreamReader
 IReader <|--IBinaryReader
 IBinaryReader <|-- IRandomAccessReader
-IRandomAccessReader <|-- IBufferReader
 BinaryStreamReader <|-- RandomAccessStreamReader
 IReader <|-- ITextReader
 ITextReader <|-- IStringReader
-ITextReader <|.. TextStreamReader
+ITextReader <|-- ITextStreamReader
 IStringReader <|.. StringReader
+ITextStreamReader <|.. TextStreamReader
 ```
 # interface IReader
 ```csharp
-//ver 1
-public interface IReader
+interface IReader
 {
-    byte ReadByte();
-    sbyte ReadSByte();
-    bool ReadBool();
-    char ReadChar();
-    short ReadShort();
-    ushort ReadUShort();
-    int ReadInt();
-    uint ReadUInt();
-    long ReadLong();
-    ulong ReadULong();
-    float ReadFloat();
-    double ReadDouble();
-    decimal ReadDecimal();
-    string ReadString();
+	byte ReadByte();
+	sbyte ReadSByte();
+	bool ReadBool();
+	char ReadChar();
+	short ReadShort();
+	ushort ReadUShort();
+	int ReadInt();
+	uint ReadUInt();
+	long ReadLong();
+	ulong ReadULong();
+	float ReadFloat();
+	double ReadDouble();
+	decimal ReadDecimal();
+	string ReadString();
 }
 ```
 # IBinaryReader
 ```csharp
-//ver 1
-public interface IBinaryReader: IReader
+interface IBinaryReader: IReader
 {
-  ByteOrder ByteOrder { get; }
-  IEnumerable<byte> ReadBytes();
-  void ReadBytes(Span<byte> bytes);
-  void ReadSBytes(Span<sbyte> sbytes);  
-  void ReadBools(Span<bool> bools);
-  void ReadShorts(Span<short> shorts);
-  void ReadUShorts(Span<ushort> ushorts);
-  void ReadInts(Span<int> ints);
-  void ReadUInts(Span<uint> uints);
-  void ReadLongs(Span<long> longs);
-  void ReadUlongs(Span<ulong> ulongs);
-  void ReadFloats(Span<float> floats);
-  void ReadDoubles(Span<double> doubles);
-  void ReadDecimals(Span<decimal> decimals);
+	ByteOrder ByteOrder { get; }
+	IEnumerable<byte> ReadBytes();
+	void ReadBytes(Span<byte> bytes);
+	void ReadSBytes(Span<sbyte> sbytes);  
+	void ReadBools(Span<bool> bools);
+	void ReadChars(Span<char> chars);	
+	void ReadShorts(Span<short> shorts);
+	void ReadUShorts(Span<ushort> ushorts);
+	void ReadInts(Span<int> ints);
+	void ReadUInts(Span<uint> uints);
+	void ReadLongs(Span<long> longs);
+	void ReadUlongs(Span<ulong> ulongs);
+	void ReadFloats(Span<float> floats);
+	void ReadDoubles(Span<double> doubles);
+	void ReadDecimals(Span<decimal> decimals);
 }
 ```
 # class BinaryStreamReader
 ```csharp
-//ver 1
-public class BinaryStreamReader: IBinaryReader, IDestructible
+class BinaryStreamReader: IBinaryReader, IDestructible
 {
-  public BinaryStreamReader(Stream srcStream, ByteOrder endianness = ByteOrder.System);
-  public ByteOrder ByteOrder { get; set;}
-  public bool IsDisposed {get;}
-  public IEnumerable<byte> ReadBytes();
-  public byte ReadByte();  
-  public void ReadBytes(Span<byte> bytes);
-  public sbyte ReadSByte();
-  public void ReadSBytes(Span<sbyte> sbytes);
-  public bool ReadBool();
-  public void ReadBools(Span<bool> bools);
-  public char ReadChar();
-  public void ReadChars(Span<char> chars);
-  public short ReadShort();
-  public void ReadShorts(Span<short> shorts);
-  public ushort ReadUShort();
-  public void ReadUShorts(Span<ushort> ushorts);
-  public int ReadInt();
-  public void ReadInts(Span<int> ints);
-  public uint ReadUInt();  
-  public void ReadUInts(Span<uint> uints);
-  public long ReadLong();
-  public void  ReadLongs(Span<long> longs);
-  public ulong ReadULong();
-  public void ReadULongs(Span<ulong> ulong);
-  public float ReadFloat();
-  public void ReadFloats(Span<float> floats);
-  public double ReadDouble();
-  public void ReadDoubles(Span<double> doubles);
-  public decimal ReadDecimal();
-  public void ReadDecimals(Span<decimal> decimals);    
-  public string ReadString();
-  public void Dispose();
+	public BinaryStreamReader(Stream srcStream, ByteOrder endianness = ByteOrder.System);
+	public ByteOrder ByteOrder { get; set;}
+	public bool IsDisposed {get;}
+	public IEnumerable<byte> ReadBytes();
+	public byte ReadByte();  
+	public void ReadBytes(Span<byte> bytes);
+	public sbyte ReadSByte();
+	public void ReadSBytes(Span<sbyte> sbytes);
+	public bool ReadBool();
+	public void ReadBools(Span<bool> bools);
+	public char ReadChar();
+	public void ReadChars(Span<char> chars);
+	public short ReadShort();
+	public void ReadShorts(Span<short> shorts);
+	public ushort ReadUShort();
+	public void ReadUShorts(Span<ushort> ushorts);
+	public int ReadInt();
+	public void ReadInts(Span<int> ints);
+	public uint ReadUInt();  
+	public void ReadUInts(Span<uint> uints);
+	public long ReadLong();
+	public void  ReadLongs(Span<long> longs);
+	public ulong ReadULong();
+	public void ReadULongs(Span<ulong> ulong);
+	public float ReadFloat();
+	public void ReadFloats(Span<float> floats);
+	public double ReadDouble();
+	public void ReadDoubles(Span<double> doubles);
+	public decimal ReadDecimal();
+	public void ReadDecimals(Span<decimal> decimals);    
+	public string ReadString();
+	public void Dispose();
 }
 ```
 ## BinaryStreamReader(Stream, ByteOrder)
@@ -486,12 +484,11 @@ public void ReadUShorts(Span<ushort> ushorts)
 ```
 # interface IRandomAccessReader
 ```csharp
-//ver 1
-public interface IRandomAccessReader: IBinaryReader
+interface IRandomAccessReader: IBinaryReader
 {
-  long Position {get; set;}
-  long Length {get;}
-  bool IsExhausted {get;}
+	long Position {get; set;}
+	long Length {get;}
+	bool IsExhausted {get;}
 }
 ```
 ## Invariant
@@ -549,10 +546,4 @@ public RandomAccessStreamReader(Stream stm, ByteOrder endianness = ByteOrder.Sys
     ByteOrder.SameAs(endianness);
   }
 }
-```
-# interface IBufferReader
-```csharp
-//ver 1
-interface IBufferReader: IRandomAccessReader
-{}
 ```
