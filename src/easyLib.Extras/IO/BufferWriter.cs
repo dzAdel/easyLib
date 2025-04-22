@@ -2,7 +2,7 @@
 
 namespace easyLib.Extras.IO;
 
-public interface IBufferWriter : IRandomAccessWriter
+public interface IBufferWriter : ISeekableWriter
 {
     int Capacity { get; }
 }

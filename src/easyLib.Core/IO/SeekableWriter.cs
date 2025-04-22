@@ -1,8 +1,7 @@
 ﻿namespace easyLib.IO;
 
-public interface IRandomAccessReader : IBinaryReader
+public interface ISeekableWriter : IBinaryWriter
 {
     long Position { get; set; }
     long Length { get; }
-    bool IsExhausted { get; }
 }

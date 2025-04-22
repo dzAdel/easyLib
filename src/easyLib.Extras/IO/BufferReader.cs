@@ -2,5 +2,5 @@
 
 namespace easyLib.Extras.IO;
 
-public interface IBufferReader : IRandomAccessReader
+public interface IBufferReader : ISeekableReader
 { }

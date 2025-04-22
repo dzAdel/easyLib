@@ -1,8 +1,8 @@
 ﻿namespace easyLib.IO;
 
-public sealed class RandomAccessStreamWriter : BinaryStreamWriter, IRandomAccessWriter
+public sealed class SeekableStreamWriter : BinaryStreamWriter, ISeekableWriter
 {
-    public RandomAccessStreamWriter(Stream stream, ByteOrder endianness = ByteOrder.System) :
+    public SeekableStreamWriter(Stream stream, ByteOrder endianness = ByteOrder.System) :
         base(stream, endianness)
     {
         require(stream != null);

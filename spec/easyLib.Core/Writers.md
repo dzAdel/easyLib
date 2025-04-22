@@ -2,26 +2,26 @@
 classDiagram 
 class IWriter {<<interface>>}
 class IBinaryWriter {<<interface>>}
-class IRandomAccessWriter {<<interface>>}
-class IBufferWriter {<<interface>>}
+class ISeekableWriter {<<interface>>}
 class BinaryStreamWriter
-class RandomAccessStreamWriter
+class SeekableStreamWriter
 
 class ITextWriter {<<interface>>}
+class ITextStreamWriter {<<interface>>}
 class TextStreamWriter
 class IStringWriter {<<interface>>}
 class StringWriter
 
 IWriter <|-- IBinaryWriter
 IBinaryWriter <|.. BinaryStreamWriter
-IRandomAccessWriter <|.. RandomAccessStreamWriter
-IBinaryWriter <|-- IRandomAccessWriter
-IRandomAccessWriter <|-- IBufferWriter
-BinaryStreamWriter <|-- RandomAccessStreamWriter
+ISeekableWriter <|.. SeekableStreamWriter
+IBinaryWriter <|-- ISeekableWriter
+BinaryStreamWriter <|-- SeekableStreamWriter
 
 IWriter <|-- ITextWriter
 ITextWriter <|-- IStringWriter
-ITextWriter <|.. TextStreamWriter
+ITextWriter <|.. ITextStreamWriter
+ITextStreamWriter <|.. TextStreamWriter
 IStringWriter <|.. StringWriter
 ```
 
@@ -461,10 +461,10 @@ public void WriteUShorts(ReadOnlySpan<ushort> ushorts)
   }
 }
 ```
-# interface IRandomAcessWriter
+# interface ISeekableWriter
 ```csharp
 //ver 1
-public interface IRandomAccessWriter: IBinStreamWriter
+public interface ISeekableWriter: IBinStreamWriter
 {
   long Position {get; set;}
   long Length {get;}
@@ -495,19 +495,19 @@ long Position
   }
 }
 ```
-# class RandomAccessStreamWriter
+# class SeekableStreamWriter
 ```csharp
 //ver 1
-public class RandomAccessStreamWriter: BinaryStreamWriter, IRandomAccessWriter
+public class SeekableStreamWriter: BinaryStreamWriter, ISeekableWriter
 {
-  public RandomAccessStreamWriter(Stream stm, ByteOrder endianness = ByteOrder.System);
+  public SeekableStreamWriter(Stream stm, ByteOrder endianness = ByteOrder.System);
   public long Position {get; set;}
   public long Length {get;}
 }
 ```
-## RandomAccessStreamWriter(Stream, ByteOrder)
+## SeekableStreamWriter(Stream, ByteOrder)
 ```csharp
-public RandomAcessStreamWriter(Stream stm, ByteOrder endianness = ByteOrder.System)
+public SeekableStreamWriter(Stream stm, ByteOrder endianness = ByteOrder.System)
 {
   require
   {
@@ -522,13 +522,5 @@ public RandomAcessStreamWriter(Stream stm, ByteOrder endianness = ByteOrder.Syst
     Length == stm.Length;
     ByteOrder.SameAs(endianness);
   }
-}
-```
-# interface IBufferWriter
-```csharp
-//ver 1
-interface IBufferWriter: IRandomAccessWriter
-{
-  int Capacity {get;}
 }
 ```

@@ -1,8 +1,8 @@
 ﻿namespace easyLib.IO;
 
-public sealed class RandomAccessStreamReader : BinaryStreamReader, IRandomAccessReader
+public sealed class SeekableStreamReader : BinaryStreamReader, ISeekableReader
 {
-    public RandomAccessStreamReader(Stream stream, ByteOrder endianness = ByteOrder.System) :
+    public SeekableStreamReader(Stream stream, ByteOrder endianness = ByteOrder.System) :
         base(stream, endianness)
     {
         require(stream != null);

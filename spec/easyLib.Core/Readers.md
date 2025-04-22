@@ -2,19 +2,19 @@
 classDiagram 
 class IReader {<<interface>>}
 class IBinaryReader {<<interface>>}
-class IRandomAccessReader {<<interface>>}
+class ISeekableReader {<<interface>>}
 class BinaryStreamReader
-class RandomAccessStreamReader
+class SeekableStreamReader
 class ITextReader {<<interface>>}
 class ITextStreamReader {<<interface>>}
 class TextStreamReader
 class IStringReader {<<interface>>}
 class StringReader
 IBinaryReader <|.. BinaryStreamReader
-IRandomAccessReader <|.. RandomAccessStreamReader
+ISeekableReader <|.. SeekableStreamReader
 IReader <|--IBinaryReader
-IBinaryReader <|-- IRandomAccessReader
-BinaryStreamReader <|-- RandomAccessStreamReader
+IBinaryReader <|-- ISeekableReader
+BinaryStreamReader <|-- SeekableStreamReader
 IReader <|-- ITextReader
 ITextReader <|-- IStringReader
 ITextReader <|-- ITextStreamReader
@@ -41,7 +41,7 @@ interface IReader
 	string ReadString();
 }
 ```
-# IBinaryReader
+# interface IBinaryReader
 ```csharp
 interface IBinaryReader: IReader
 {
@@ -482,9 +482,9 @@ public void ReadUShorts(Span<ushort> ushorts)
   }
 }
 ```
-# interface IRandomAccessReader
+# interface ISeekableReader
 ```csharp
-interface IRandomAccessReader: IBinaryReader
+interface ISeekableReader: IBinaryReader
 {
 	long Position {get; set;}
 	long Length {get;}
@@ -517,20 +517,20 @@ long Position
   }
 }
 ```
-# class RandomAccessStreamReader
+# class SeekableStreamReader
 ```csharp
 //ver 1
-public class RandomAccessStreamReader: BinaryStreamReader, IRandomAccesReader
+public class SeekableStreamReader: BinaryStreamReader, ISeekableReader
 {
-  public RandomAccessStreamReader(Stream stm, ByteOrder endianness = ByteOrder.System);
+  public SeekableStreamReader(Stream stm, ByteOrder endianness = ByteOrder.System);
   public long Position {get; set;}
   public long Length {get;}
   public bool IsExhausted {get;}
 }
 ```
-## RandomAcessStreamReader(Stream, ByteOrder)
+## SeekableStreamReader(Stream, ByteOrder)
 ```csharp
-public RandomAccessStreamReader(Stream stm, ByteOrder endianness = ByteOrder.System)
+public SeekableStreamReader(Stream stm, ByteOrder endianness = ByteOrder.System)
 {
   require
   {
@@ -545,5 +545,27 @@ public RandomAccessStreamReader(Stream stm, ByteOrder endianness = ByteOrder.Sys
     Length == stm.Length;
     ByteOrder.SameAs(endianness);
   }
+}
+```
+# interface ITextReader
+```csharp
+interface ITextReader: IReader
+{
+	bool TryReadByte(out byte b, NumeralSystem radix = default);
+	bool TryReadSByte(out sbyte sb, NumeralSystem radix = default);
+	bool TryReadBool(out bool b, NumeralSystem radix = default);
+	bool TryReadChar(out char c);
+	bool TryReadShort(out short s, NumeralSystem radix = default);
+	bool TryReadUShort(out ushort us, NumeralSystem radix = default);
+	bool TryReadInt(out int n, NumeralSystem radix = default);
+	bool TryReadUInt(out uint ui, NumeralSystem radix = default);
+	bool TryReadLong(out long l, NumeralSystem radix = default);
+	bool TryReadULong(out ulong ul, NumeralSystem radix = default);
+	bool TryReadFloat(out float f, NumeralSystem radix = default);
+	bool TryReadDouble(out double d, NumeralSystem radix = default);
+	bool TryReadDecimal(out decimal d, NumeralSystem radix = default);
+	bool TryReadString(out string s);
+	bool TryReadRune(out string r);
+	string? ReadLine();
 }
 ```
