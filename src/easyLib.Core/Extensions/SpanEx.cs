@@ -5,7 +5,7 @@ public static class SpanEx
     public static IEnumerable<T> ToEnumerable<T>(this ReadOnlySpan<T> span)
     {
         int len = span.Length;
-        T[] items = ArrayPool.Rent<T>(len);
+        T[] items = ArrayPool.Alloc<T>(len);
         span.CopyTo(items);
 
         return enumerate(items, len);
@@ -16,7 +16,7 @@ public static class SpanEx
             for (int i = 0; i < count; ++i)
                 yield return src[i];
 
-            ArrayPool.Return(src);
+            ArrayPool.Free(src);
         }
     }
 

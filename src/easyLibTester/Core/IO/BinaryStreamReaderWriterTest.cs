@@ -132,10 +132,10 @@ class BinaryStreamReaderWriterTest : UnitTest
 
         RewindStream();
         int destOff = SampleFactory.NextByte;
-        decimal[] dest = ArrayPool.Rent<decimal>(count + destOff);
+        decimal[] dest = ArrayPool.Alloc<decimal>(count + destOff);
         reader.ReadDecimals(dest.AsSpan(destOff, count));
         Ensure(dest.Skip(destOff).Take(count).SequenceEqual(src.Skip(srcOff).Take(count)));
-        ArrayPool.Return(dest);
+        ArrayPool.Free(dest);
     }
 
     void TestWriteReadDoubles()
@@ -160,10 +160,10 @@ class BinaryStreamReaderWriterTest : UnitTest
 
         RewindStream();
         int destOff = SampleFactory.NextByte;
-        double[] dest = ArrayPool.Rent<double>(count + destOff);
+        double[] dest = ArrayPool.Alloc<double>(count + destOff);
         reader.ReadDoubles(dest.AsSpan(destOff, count));
         Ensure(dest.Skip(destOff).Take(count).SequenceEqual(src.Skip(srcOff).Take(count)));
-        ArrayPool.Return(dest);
+        ArrayPool.Free(dest);
     }
 
     void TestWriteReadFloats()
@@ -188,10 +188,10 @@ class BinaryStreamReaderWriterTest : UnitTest
 
         RewindStream();
         int destOff = SampleFactory.NextByte;
-        float[] dest = ArrayPool.Rent<float>(count + destOff);
+        float[] dest = ArrayPool.Alloc<float>(count + destOff);
         reader.ReadFloats(dest.AsSpan(destOff, count));
         Ensure(dest.Skip(destOff).Take(count).SequenceEqual(src.Skip(srcOff).Take(count)));
-        ArrayPool.Return(dest);
+        ArrayPool.Free(dest);
     }
 
     void TestWriteReadLongs()
@@ -216,10 +216,10 @@ class BinaryStreamReaderWriterTest : UnitTest
 
         RewindStream();
         int destOff = SampleFactory.NextByte;
-        long[] dest = ArrayPool.Rent<long>(count + destOff);
+        long[] dest = ArrayPool.Alloc<long>(count + destOff);
         reader.ReadLongs(dest.AsSpan(destOff, count));
         Ensure(dest.Skip(destOff).Take(count).SequenceEqual(src.Skip(srcOff).Take(count)));
-        ArrayPool.Return(dest);
+        ArrayPool.Free(dest);
     }
 
     void TestWriteReadULongs()
@@ -244,7 +244,7 @@ class BinaryStreamReaderWriterTest : UnitTest
 
         RewindStream();
         int destOff = SampleFactory.NextByte;
-        ulong[] dest = ArrayPool.Rent<ulong>(count + destOff);
+        ulong[] dest = ArrayPool.Alloc<ulong>(count + destOff);
         reader.ReadULongs(dest.AsSpan(destOff, count));
         Ensure(dest.Skip(destOff).Take(count).SequenceEqual(src.Skip(srcOff).Take(count)));
 
@@ -272,11 +272,11 @@ class BinaryStreamReaderWriterTest : UnitTest
 
         RewindStream();
         int destOff = SampleFactory.NextByte;
-        int[] dest = ArrayPool.Rent<int>(destOff + count);
+        int[] dest = ArrayPool.Alloc<int>(destOff + count);
         reader.ReadInts(dest.AsSpan(destOff, count));
         Ensure(dest.Skip(destOff).Take(count).SequenceEqual(src.Skip(srcOff).Take(count)));
 
-        ArrayPool.Return(dest);
+        ArrayPool.Free(dest);
     }
 
     void TestWriteReadUInts()
@@ -301,11 +301,11 @@ class BinaryStreamReaderWriterTest : UnitTest
 
         RewindStream();
         int destOff = SampleFactory.NextByte;
-        uint[] dest = ArrayPool.Rent<uint>(count + destOff);
+        uint[] dest = ArrayPool.Alloc<uint>(count + destOff);
         reader.ReadUInts(dest.AsSpan(destOff, count));
         Ensure(dest.Skip(destOff).Take(count).SequenceEqual(src.Skip(srcOff).Take(count)));
 
-        ArrayPool.Return(dest);
+        ArrayPool.Free(dest);
     }
 
     void TestWriteReadShorts()
@@ -329,12 +329,12 @@ class BinaryStreamReaderWriterTest : UnitTest
         writer.WriteShorts(src.AsSpan(srcOff, count));
 
         int destOff = SampleFactory.NextByte;
-        short[] dest = ArrayPool.Rent<short>(count + destOff);
+        short[] dest = ArrayPool.Alloc<short>(count + destOff);
         RewindStream();
         reader.ReadShorts(dest.AsSpan(destOff, count));
         Ensure(dest.Skip(destOff).Take(count).SequenceEqual(src.Skip(srcOff).Take(count)));
 
-        ArrayPool.Return(dest);
+        ArrayPool.Free(dest);
     }
 
 
@@ -360,11 +360,11 @@ class BinaryStreamReaderWriterTest : UnitTest
 
         RewindStream();
         int destOff = SampleFactory.NextByte;
-        ushort[] dest = ArrayPool.Rent<ushort>(count + destOff);
+        ushort[] dest = ArrayPool.Alloc<ushort>(count + destOff);
         reader.ReadUShorts(dest.AsSpan(destOff, count));
         Ensure(dest.Skip(destOff).Take(count).SequenceEqual(src.Skip(srcOff).Take(count)));
 
-        ArrayPool.Return(dest);
+        ArrayPool.Free(dest);
     }
 
     void TestWriteReadChars()
@@ -389,11 +389,11 @@ class BinaryStreamReaderWriterTest : UnitTest
 
         RewindStream();
         int destOff = SampleFactory.NextByte;
-        char[] dest = ArrayPool.Rent<char>(count + destOff);
+        char[] dest = ArrayPool.Alloc<char>(count + destOff);
         reader.ReadChars(dest.AsSpan(destOff, count));
         Ensure(dest.Skip(destOff).Take(count).SequenceEqual(src.Skip(srcOff).Take(count)));
 
-        ArrayPool.Return(dest);
+        ArrayPool.Free(dest);
     }
 
     void TestWriteReadBools()
@@ -418,10 +418,10 @@ class BinaryStreamReaderWriterTest : UnitTest
 
         RewindStream();
         int destOff = SampleFactory.NextByte;
-        bool[] dest = ArrayPool.Rent<bool>(count + destOff);
+        bool[] dest = ArrayPool.Alloc<bool>(count + destOff);
         reader.ReadBools(dest.AsSpan(destOff, count));
         Ensure(dest.Skip(destOff).Take(count).SequenceEqual(src.Skip(srcOff).Take(count)));
-        ArrayPool.Return(dest);
+        ArrayPool.Free(dest);
     }
 
     void TestWriteReadSBytes()
@@ -447,13 +447,13 @@ class BinaryStreamReaderWriterTest : UnitTest
         writer.WriteSBytes(rosp);
 
         int dstOff = SampleFactory.NextByte;
-        sbyte[] dest = ArrayPool.Rent<sbyte>(count + dstOff);
+        sbyte[] dest = ArrayPool.Alloc<sbyte>(count + dstOff);
 
         RewindStream();
         reader.ReadSBytes(dest.AsSpan(dstOff, count));
         Ensure(src.Skip(srcOff).Take(count).SequenceEqual(dest.Skip(dstOff).Take(count)));
 
-        ArrayPool.Return(dest);
+        ArrayPool.Free(dest);
     }
 
     void TestWriteReadBytes()
@@ -480,7 +480,7 @@ class BinaryStreamReaderWriterTest : UnitTest
 
         RewindStream();
         int destOff = SampleFactory.NextByte;
-        byte[] bytes = ArrayPool.Rent<byte>(count + destOff);
+        byte[] bytes = ArrayPool.Alloc<byte>(count + destOff);
         Span<byte> dest = new(bytes, destOff, count);
         reader.ReadBytes(dest);
 
@@ -490,7 +490,7 @@ class BinaryStreamReaderWriterTest : UnitTest
         RewindStream();
         Ensure(reader.ReadBytes().SequenceEqual(sample.Skip(srcOff).Take(count)));
 
-        ArrayPool.Return(bytes);
+        ArrayPool.Free(bytes);
     }
 
     //void TestWriteRead()

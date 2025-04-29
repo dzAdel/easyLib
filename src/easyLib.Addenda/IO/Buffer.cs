@@ -12,7 +12,7 @@ public sealed partial class Buffer : IReadOnlyBuffer, IDestructible
         require(maxLen >= 0);
         require(maxLen <= Array.MaxLength);
 
-        m_buffer = reserve ? ArrayPool.Rent<byte>(maxLen) : ArrayPool.Rent<byte>(Math.Min(maxLen, sizeof(decimal)));
+        m_buffer = reserve ? ArrayPool.Alloc<byte>(maxLen) : ArrayPool.Alloc<byte>(Math.Min(maxLen, sizeof(decimal)));
 
         Capacity = maxLen;
 
@@ -27,7 +27,7 @@ public sealed partial class Buffer : IReadOnlyBuffer, IDestructible
     {
         require(other != null);
 
-        m_buffer = ArrayPool.Rent<byte>(other.m_buffer.Length);
+        m_buffer = ArrayPool.Alloc<byte>(other.m_buffer.Length);
 
         unsafe
         {
@@ -401,7 +401,7 @@ public sealed partial class Buffer : IReadOnlyBuffer, IDestructible
     {
         if (!IsDisposed)
         {
-            ArrayPool.Return(m_buffer);
+            ArrayPool.Free(m_buffer);
             m_buffer = Array.Empty<byte>();
 
             IsDisposed = true;
@@ -467,7 +467,7 @@ public sealed partial class Buffer : IReadOnlyBuffer, IDestructible
         if (sz <= Capacity)
             minSize = (int)sz;
 
-        byte[] newBuffer = ArrayPool.Rent<byte>(minSize);
+        byte[] newBuffer = ArrayPool.Alloc<byte>(minSize);
 
         unsafe
         {
@@ -475,7 +475,7 @@ public sealed partial class Buffer : IReadOnlyBuffer, IDestructible
                 CopyTo(ptrBuffer, Count, 0);
         }
 
-        ArrayPool.Return(m_buffer);
+        ArrayPool.Free(m_buffer);
         m_buffer = newBuffer;
     }
 

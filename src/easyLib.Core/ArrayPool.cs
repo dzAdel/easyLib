@@ -5,7 +5,7 @@ namespace easyLib;
 public static class ArrayPool
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static T[] Rent<T>(int len)
+    public static T[] Alloc<T>(int len)
     {
         require(len >= 0);
         require(len <= Array.MaxLength);
@@ -14,7 +14,7 @@ public static class ArrayPool
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void Return<T>(T[] array)
+    public static void Free<T>(T[] array)
     {
         if (array != null)
             System.Buffers.ArrayPool<T>.Shared.Return(array);

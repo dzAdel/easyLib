@@ -20,7 +20,7 @@ public static class DebugHelper
     {
         if (!condition)
         {
-            StringBuilder sb = new("\nAssertion failure: ");
+            StringBuilder sb = new("\n# Assertion failure: ");
 
             if (message != null)
                 sb.Append(message.TrimEnd());
@@ -52,7 +52,7 @@ public static class DebugHelper
     {
         if (!condition)
         {
-            StringBuilder sb = new("\nPrecondition failure: ");
+            StringBuilder sb = new("\n# Precondition failure: ");
 
             if (message != null)
                 sb.Append(message.TrimEnd());
@@ -83,7 +83,7 @@ public static class DebugHelper
     {
         if (!condition)
         {
-            StringBuilder sb = new("\nPostcondition failure: ");
+            StringBuilder sb = new("\n# Postcondition failure: ");
 
             if (message != null)
                 sb.Append(message.TrimEnd());

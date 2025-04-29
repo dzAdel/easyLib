@@ -9,13 +9,13 @@ public sealed partial class ForwardList<T> : IReadOnlyForwardList<T>
     public ForwardList()
     { }
 
-    public ForwardList(T item) => m_firstNode = new(item);
+    public ForwardList(T? item) => m_firstNode = new(item);
 
-    public ForwardList(IEnumerable<T> items)
+    public ForwardList(IEnumerable<T?> items)
     {
         require(items != null);
 
-        using IEnumerator<T> enumerator = items.GetEnumerator();
+        using IEnumerator<T?> enumerator = items.GetEnumerator();
 
         if (enumerator.MoveNext())
         {
@@ -35,7 +35,7 @@ public sealed partial class ForwardList<T> : IReadOnlyForwardList<T>
         }
     }
 
-    public ForwardList(ReadOnlySpan<T> span)
+    public ForwardList(ReadOnlySpan<T?> span)
     {
         int len = span.Length;
 
@@ -60,7 +60,7 @@ public sealed partial class ForwardList<T> : IReadOnlyForwardList<T>
         m_firstNode = node;
     }
 
-    public ForwardList(ForwardList<T> other, Func<T, T>? clone = null)
+    public ForwardList(ForwardList<T> other, Func<T?, T?>? clone = null)
     {
         require(other != null);
 
@@ -125,19 +125,19 @@ public sealed partial class ForwardList<T> : IReadOnlyForwardList<T>
         return count;
     }
 
-    public IEnumerator<T> GetEnumerator()
+    public IEnumerator<T?> GetEnumerator()
     {
         for (Node? node = m_firstNode; node != null; node = node.NextNode)
             yield return node.Item;
     }
 
     [MemberNotNullWhen(true, nameof(m_firstNode))]
-    public bool Contains(T item, Func<T, T, bool>? eql = null)
+    public bool Contains(T? item, Func<T?, T?, bool>? eql = null)
     {
         if (m_firstNode == null)
             return false;
 
-        eql ??= EqualityComparer<T>.Default.Equals;
+        eql ??= EqualityComparer<T?>.Default.Equals;
 
         for (Node? node = m_firstNode; node != null; node = node.NextNode)
             if (eql(node.Item, item))
@@ -146,7 +146,7 @@ public sealed partial class ForwardList<T> : IReadOnlyForwardList<T>
         return false;
     }
 
-    public bool Contains(Func<T, bool> predicate)
+    public bool Contains(Func<T?, bool> predicate)
     {
         require(predicate != null);
 
@@ -158,16 +158,11 @@ public sealed partial class ForwardList<T> : IReadOnlyForwardList<T>
     }
 
     [MemberNotNullWhen(true, nameof(m_firstNode))]
-    public bool Contains(IForwardListNode<T> node)
-    {
-        require(node != null);
+    public bool Contains(IForwardListNode<T>? node) => node != null && m_firstNode != null && node.IsReachableFrom(m_firstNode);
 
-        return m_firstNode != null && node.IsReachableFrom(m_firstNode);
-    }
-
-    public Node? Locate(T item, Func<T, T, bool>? eql = null)
+    public Node? Locate(T? item, Func<T?, T?, bool>? eql = null)
     {
-        eql ??= EqualityComparer<T>.Default.Equals;
+        eql ??= EqualityComparer<T?>.Default.Equals;
         Node? node = m_firstNode;
 
         while (node != null && !eql(node.Item, item))
@@ -176,7 +171,7 @@ public sealed partial class ForwardList<T> : IReadOnlyForwardList<T>
         return node;
     }
 
-    public Node? Locate(Func<T, bool> predicate)
+    public Node? Locate(Func<T?, bool> predicate)
     {
         require(predicate != null);
 
@@ -188,9 +183,8 @@ public sealed partial class ForwardList<T> : IReadOnlyForwardList<T>
         return node;
     }
 
-    public Node? Locate(T item, IForwardListNode<T> startNode, Func<T, T, bool>? eql = null)
+    public Node? Locate(T? item, IForwardListNode<T> startNode, Func<T?, T?, bool>? eql = null)
     {
-        require(startNode != null);
         require(Contains(startNode));
 
         eql ??= EqualityComparer<T>.Default.Equals;
@@ -202,9 +196,8 @@ public sealed partial class ForwardList<T> : IReadOnlyForwardList<T>
         return null;
     }
 
-    public Node? Locate(IForwardListNode<T> startNode, Func<T, bool> predicate)
+    public Node? Locate(IForwardListNode<T> startNode, Func<T?, bool> predicate)
     {
-        require(startNode != null);
         require(Contains(startNode));
         require(predicate != null);
 
@@ -215,14 +208,14 @@ public sealed partial class ForwardList<T> : IReadOnlyForwardList<T>
         return null;
     }
 
-    public Node LocateForward(T item, Func<T, T, bool>? eql = null)
+    public Node LocateForward(T? item, Func<T?, T?, bool>? eql = null)
     {
         require(!IsEmpty);
 
         return LocateForward(item, m_firstNode, eql);
     }
 
-    public Node LocateForward(Func<T, bool> predicate)
+    public Node LocateForward(Func<T?, bool> predicate)
     {
         require(!IsEmpty);
         require(predicate != null);
@@ -230,12 +223,11 @@ public sealed partial class ForwardList<T> : IReadOnlyForwardList<T>
         return LocateForward(m_firstNode, predicate);
     }
 
-    public Node LocateForward(T item, IForwardListNode<T> startNode, Func<T, T, bool>? eql = null)
+    public Node LocateForward(T? item, IForwardListNode<T> startNode, Func<T?, T?, bool>? eql = null)
     {
-        require(startNode != null);
         require(Contains(startNode));
 
-        eql ??= EqualityComparer<T>.Default.Equals;
+        eql ??= EqualityComparer<T?>.Default.Equals;
         var node = (Node)startNode;
 
         while (node.NextNode != null && !eql(node.NextNode.Item, item))
@@ -244,9 +236,8 @@ public sealed partial class ForwardList<T> : IReadOnlyForwardList<T>
         return node;
     }
 
-    public Node LocateForward(IForwardListNode<T> startNode, Func<T, bool> predicate)
+    public Node LocateForward(IForwardListNode<T> startNode, Func<T?, bool> predicate)
     {
-        require(startNode != null);
         require(Contains(startNode));
         require(predicate != null);
 
@@ -258,24 +249,22 @@ public sealed partial class ForwardList<T> : IReadOnlyForwardList<T>
         return node;
     }
 
-    public void Prepend(T item)
+    public void Prepend(T? item)
     {
         require(GetCount() < int.MaxValue);
 
         m_firstNode = new(item, m_firstNode);
     }
 
-    public Node? Prepend(IEnumerable<T> items)
+    public Node? Prepend(IEnumerable<T?> items)
     {
         require(items != null);
         //assume GetCount() <= int.MaxValue - items.Count()
 
-#if DEBUG
         assert(!items.TryGetNonEnumeratedCount(out int count) || GetCount() <= int.MaxValue - count);
-#endif
 
         Node? node = null;
-        IEnumerator<T> enumerator = items.GetEnumerator();
+        IEnumerator<T?> enumerator = items.GetEnumerator();
 
         if (enumerator.MoveNext())
         {
@@ -294,7 +283,7 @@ public sealed partial class ForwardList<T> : IReadOnlyForwardList<T>
         return node;
     }
 
-    public Node? Prepend(ReadOnlySpan<T> items)
+    public Node? Prepend(ReadOnlySpan<T?> items)
     {
         require(GetCount() <= int.MaxValue - items.Length);
 
@@ -335,9 +324,8 @@ public sealed partial class ForwardList<T> : IReadOnlyForwardList<T>
         return curNode;
     }
 
-    public Node Insert(T item, Node prevNode)
+    public Node Insert(T? item, Node prevNode)
     {
-        require(prevNode != null);
         require(Contains(prevNode));
         require(GetCount() < int.MaxValue);
 
@@ -346,19 +334,16 @@ public sealed partial class ForwardList<T> : IReadOnlyForwardList<T>
         return prevNode.NextNode;
     }
 
-    public Node? Insert(IEnumerable<T> items, Node prevNode)
+    public Node? Insert(IEnumerable<T?> items, Node prevNode)
     {
         require(items != null);
-        require(prevNode != null);
         require(Contains(prevNode));
         //assume GetCount() <= int.MaxValue - items.Count()
 
-#if DEBUG
         assert(!items.TryGetNonEnumeratedCount(out int count) || GetCount() <= int.MaxValue - count);
-#endif
 
         Node? node = null;
-        IEnumerator<T> enumerator = items.GetEnumerator();
+        IEnumerator<T?> enumerator = items.GetEnumerator();
 
         if (enumerator.MoveNext())
         {
@@ -377,9 +362,8 @@ public sealed partial class ForwardList<T> : IReadOnlyForwardList<T>
         return node;
     }
 
-    public Node? Insert(ReadOnlySpan<T> items, Node prevNode)
+    public Node? Insert(ReadOnlySpan<T?> items, Node prevNode)
     {
-        require(prevNode != null);
         require(Contains(prevNode));
         require(GetCount() <= int.MaxValue - items.Length);
 
@@ -407,7 +391,6 @@ public sealed partial class ForwardList<T> : IReadOnlyForwardList<T>
     {
         require(node != null);
         require(!Nodes.Last().IsReachableFrom(node));
-        require(prevNode != null);
         require(Contains(prevNode));
         require(GetCount() <= int.MaxValue - EnumerableEx.Emit(n => n?.NextNode, prevNode, null).Count());
 
@@ -433,32 +416,31 @@ public sealed partial class ForwardList<T> : IReadOnlyForwardList<T>
         return result;
     }
 
-    public void Remove(Node node, int count = 1)
+    public void Remove(Node startNode, int count = 1)
     {
-        require(node != null);
-        require(Contains(node));
+        require(Contains(startNode));
         require(count >= 0);
-        require(count <= Nodes.SkipWhile(n => n != node).Count());
+        require(count <= Nodes.SkipWhile(n => n != startNode).Count());
 
         if (count == 0)
             return;
 
-        if (node == m_firstNode)
+        if (startNode == m_firstNode)
         {
             for (int i = 1; i < count; i++)
             {
-                assert(node.NextNode != null);
-                node = node.NextNode;
+                assert(startNode.NextNode != null);
+                startNode = startNode.NextNode;
             }
 
-            m_firstNode = node.NextNode;
-            node.NextNode = null;
+            m_firstNode = startNode.NextNode;
+            startNode.NextNode = null;
         }
         else
         {
             Node prevNode = m_firstNode;
 
-            while (prevNode.NextNode != node)
+            while (prevNode.NextNode != startNode)
             {
                 assert(prevNode.NextNode != null);
                 prevNode = prevNode.NextNode;
@@ -468,18 +450,17 @@ public sealed partial class ForwardList<T> : IReadOnlyForwardList<T>
         }
     }
 
-    public Node? RemoveForward(Node node, int count = 1)
+    public Node? RemoveForward(Node startNode, int count = 1)
     {
-        require(node != null);
-        require(Contains(node));
+        require(Contains(startNode));
         require(count >= 0);
-        require(count < Nodes.SkipWhile(n => n != node).Count());
+        require(count < Nodes.SkipWhile(n => n != startNode).Count());
 
         if (count == 0)
             return null;
 
-        assert(node.NextNode != null);
-        Node result = node.NextNode;
+        assert(startNode.NextNode != null);
+        Node result = startNode.NextNode;
         Node lastNode = result;
 
         for (int i = 1; i < count; ++i)
@@ -488,7 +469,7 @@ public sealed partial class ForwardList<T> : IReadOnlyForwardList<T>
             lastNode = lastNode.NextNode;
         }
 
-        node.NextNode = lastNode.NextNode;
+        startNode.NextNode = lastNode.NextNode;
         lastNode.NextNode = null;
 
         return result;
@@ -496,7 +477,6 @@ public sealed partial class ForwardList<T> : IReadOnlyForwardList<T>
 
     public Node? StripForward(Node node)
     {
-        require(node != null);
         require(Contains(node));
 
         Node? result = node.NextNode;
@@ -508,27 +488,27 @@ public sealed partial class ForwardList<T> : IReadOnlyForwardList<T>
     public void Clear() => m_firstNode = null;
 
 
-    //explicit impl:
+    //explicit:
     IForwardListNode<T> IReadOnlyForwardList<T>.FirstNode => FirstNode;
     IEnumerable<IForwardListNode<T>> IReadOnlyForwardList<T>.Nodes => Nodes;
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-    IForwardListNode<T>? IReadOnlyForwardList<T>.Locate(T item, Func<T, T, bool>? eql) => Locate(item, eql);
+    IForwardListNode<T>? IReadOnlyForwardList<T>.Locate(T? item, Func<T?, T?, bool>? eql) => Locate(item, eql);
 
-    IForwardListNode<T>? IReadOnlyForwardList<T>.Locate(T item, IForwardListNode<T> startNode, Func<T, T, bool>? eql) =>
+    IForwardListNode<T>? IReadOnlyForwardList<T>.Locate(T? item, IForwardListNode<T> startNode, Func<T?, T?, bool>? eql) =>
         Locate(item, startNode, eql);
 
-    IForwardListNode<T> IReadOnlyForwardList<T>.LocateForward(T item, Func<T, T, bool>? eql) => LocateForward(item, eql);
+    IForwardListNode<T> IReadOnlyForwardList<T>.LocateForward(T? item, Func<T?, T?, bool>? eql) => LocateForward(item, eql);
 
-    IForwardListNode<T> IReadOnlyForwardList<T>.LocateForward(T item, IForwardListNode<T> startNode, Func<T, T, bool>? eql) =>
+    IForwardListNode<T> IReadOnlyForwardList<T>.LocateForward(T? item, IForwardListNode<T> startNode, Func<T?, T?, bool>? eql) =>
         LocateForward(item, startNode, eql);
 
-    IForwardListNode<T>? IReadOnlyForwardList<T>.Locate(Func<T, bool> predicate) => Locate(predicate);
+    IForwardListNode<T>? IReadOnlyForwardList<T>.Locate(Func<T?, bool> predicate) => Locate(predicate);
 
-    IForwardListNode<T>? IReadOnlyForwardList<T>.Locate(IForwardListNode<T> startNode, Func<T, bool> predicate) =>
+    IForwardListNode<T>? IReadOnlyForwardList<T>.Locate(IForwardListNode<T> startNode, Func<T?, bool> predicate) =>
         Locate(startNode, predicate);
-    IForwardListNode<T> IReadOnlyForwardList<T>.LocateForward(Func<T, bool> predicate) => LocateForward(predicate);
+    IForwardListNode<T> IReadOnlyForwardList<T>.LocateForward(Func<T?, bool> predicate) => LocateForward(predicate);
 
-    IForwardListNode<T> IReadOnlyForwardList<T>.LocateForward(IForwardListNode<T> startNode, Func<T, bool> predicate) =>
+    IForwardListNode<T> IReadOnlyForwardList<T>.LocateForward(IForwardListNode<T> startNode, Func<T?, bool> predicate) =>
         LocateForward(startNode, predicate);
 
     //private:

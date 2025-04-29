@@ -14,7 +14,7 @@ public class BinaryStreamWriter : IBinaryWriter, IDestructible
 
         OutputStream = destStream;
         ByteOrder = endianness;
-        m_buffer = ArrayPool.Rent<byte>(sizeof(decimal));
+        m_buffer = ArrayPool.Alloc<byte>(sizeof(decimal));
 
         DisposablesTracker.Add(this);
     }
@@ -308,7 +308,7 @@ public class BinaryStreamWriter : IBinaryWriter, IDestructible
     //protected:
     protected Stream OutputStream { get; }
     protected UTF8Encoding Encoder => m_encoding ??= new UTF8Encoding(false, true);
-    protected virtual void DoDispose() => ArrayPool.Return(m_buffer);
+    protected virtual void DoDispose() => ArrayPool.Free(m_buffer);
 
     //private:
     const int MAX_BUFFER_SIZE = ushort.MaxValue;
@@ -330,8 +330,8 @@ public class BinaryStreamWriter : IBinaryWriter, IDestructible
             size = size < MAX_BUFFER_SIZE ? (int)BitOperations.RoundUpToPowerOf2((uint)size) : MAX_BUFFER_SIZE;
             assert(size <= MAX_BUFFER_SIZE);
 
-            byte[] newBuffer = ArrayPool.Rent<byte>(size);
-            ArrayPool.Return(m_buffer);
+            byte[] newBuffer = ArrayPool.Alloc<byte>(size);
+            ArrayPool.Free(m_buffer);
             m_buffer = newBuffer;
         }
     }

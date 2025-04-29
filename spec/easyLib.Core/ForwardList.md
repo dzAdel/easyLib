@@ -1,9 +1,8 @@
-# interface IForwardListNode\<T>
+# interface IForwardListNode< T >
 ```csharp
-//ver 1
 interface IForwardListNode<T>
 {
-  ref readonly T Item {get;}
+  ref readonly T? Item {get;}
   IForwardListNode<T>? NextNode {get;}
   bool IsReachableFrom(IForwardListNode<T> node);
 }
@@ -15,7 +14,7 @@ Invariant
   this.IsReachableFrom(this);
 }
 ```
-## IsReachableFrom(IForwardListNode\<T>)
+## IsReachableFrom(IForwardListNode< T >)
 ```csharp
 bool IsReachableFrom(IForwardListNode<T> node)
 {
@@ -29,26 +28,30 @@ bool IsReachableFrom(IForwardListNode<T> node)
   }
 }
 ```
-# interface IReadOnlyForwardList\<T>
+# interface IReadOnlyForwardList< T >
 ```csharp
 //ver1
-interface IReadOnlyForwardList<T>: IEnumerable<T>
+interface IReadOnlyForwardList<T>: IEnumerable<T?>
 {
   bool IsEmpty {get;}
   IForwardListNode<T> FirstNode {get;}
   IEnumerable<IForwardListNode<T>> Nodes {get;}
   int GetCount();
-  bool Contains(T item, Func<T, T, bool>? eqls = null);
-  bool Contains(Func<T, bool> predicate);
-  bool Contains(IForwardListNode<T> node);
-  IForwardListNode<T>? Locate(T item, Func<T, T, bool>? eqls = null);
-  IForwardListNode<T>? Locate(Func<T, bool> predicate);  
-  IForwardListNode<T>? Locate(T item, IForwardListNode<T> startNode, Func<T, T, bool>? eqls = null);
-  IForwardListNode<T>? Locate(IForwardListNode<T> startNode, Func<T, bool> predicate);  
-  IForwardListNode<T> LocateForward(T item, Func<T, T, bool>? eqls = null);
-  IForwardListNode<T> LocateForward(Func<T, bool> predicate);  
-  IForwardListNode<T> LocateForward(T item, IForwardListNode<T> startNode, Func<T, T, bool>? eqls = null);
-  IForwardListNode<T> LocateForward(IForwardListNode<T> startNode, Func<T, bool> predicate);
+  bool Contains(T? item, Func<T?, T?, bool>? eqls = null);
+  bool Contains(Func<T?, bool> predicate);	
+  bool Contains(IForwardListNode<T>? node);
+	
+  IForwardListNode<T>? Locate(T? item, Func<T?, T?, bool>? eqls = null);
+  IForwardListNode<T>? Locate(Func<T?, bool> predicate);  
+	
+  IForwardListNode<T>? Locate(T? item, IForwardListNode<T> startNode, Func<T?, T?, bool>? eqls = null);
+  IForwardListNode<T>? Locate(IForwardListNode<T> startNode, Func<T?, bool> predicate);  
+	
+  IForwardListNode<T> LocateForward(T? item, Func<T?, T?, bool>? eqls = null);
+  IForwardListNode<T> LocateForward(Func<T?, bool> predicate);  
+	
+  IForwardListNode<T> LocateForward(T? item, IForwardListNode<T> startNode, Func<T?, T?, bool>? eqls = null);
+  IForwardListNode<T> LocateForward(IForwardListNode<T> startNode, Func<T?, bool> predicate);
 }
 ```
 ## Invariant
@@ -67,9 +70,9 @@ Invariant
   IsEmpty || this.Skip(1).All(item => LocateFoward(item, FirstNode).NextNode != null);
 }
 ```
-## Contains(Func\<T, bool>)
+## Contains(Func< T?, bool >)
 ```csharp
-bool Contains(Func<T, bool> predicate)
+bool Contains(Func<T?, bool> predicate)
 {
   require
   {
@@ -77,14 +80,10 @@ bool Contains(Func<T, bool> predicate)
   }
 }
 ```
-## Contains(IForwardListNode\<T>)
+## Contains(IForwardListNode< T >)
 ```csharp
-bool Contains(IForwardListNode<T> node)
+bool Contains(IForwardListNode<T>? node)
 {
-  require
-  {
-    node != null;
-  }
   ensure
   {
     IsEmpty || Result == node.IsReachable(FirstNode);
@@ -104,9 +103,9 @@ IForwardListNode<T> FirstNode
   }
 }
 ```
-## Locate(Func\<T, bool>)
+## Locate(Func< T?, bool >)
 ```csharp
-IForwardListNode<T>? Locate(Func<T, bool> predicate)
+IForwardListNode<T>? Locate(Func<T?, bool> predicate)
 {
   require
   {
@@ -121,27 +120,27 @@ IForwardListNode<T>? Locate(Func<T, bool> predicate)
   }
 }
 ```
-## Locate(IForwardListNode\<T>, Func\<T, bool>)
+## Locate(IForwardListNode< T >, Func< T?, bool >)
 ```csharp
-IForwardListNode<T>? Locate(IForwardListNode<T> startNode, Func<T, bool> predicate)
+IForwardListNode<T>? Locate(IForwardListNode<T> startNode, Func<T?, bool> predicate)
 {
   require
   {
-    startNode != null;
     Contains(startNode);
+	predicate != null;
   }
   ensure
   {
     Result == null || Contains(Result);
     Result == null || predicate(Result.Item);
-    Result != null || !Nodes.SkipWhile(nd => nd != result).Any(nd => predicate(nd.Item));
+    Result != null || !Nodes.SkipWhile(nd => nd != Result).Any(nd => predicate(nd.Item));
     Result == null || !Nodes.SkipWhile(nd => nd != startNode).TakeWhile(nd => nd != Result).Any(nd => predicate(nd.Item));    
   }
 }
 ```
-## Locate(T, Func\<T, T, bool>?)
+## Locate(T?, Func< T?, T?, bool >?)
 ```csharp
-IForwardListNode<T>? Locate(T item, Func<T, T, bool>? eqls = null)
+IForwardListNode<T>? Locate(T? item, Func<T?, T?, bool>? eqls = null)
 {
   ensure
   {
@@ -154,13 +153,12 @@ IForwardListNode<T>? Locate(T item, Func<T, T, bool>? eqls = null)
   }
 }
 ```
-## Locate(T, IForwardListNode\<T>, Func\<T, T, bool>?)
+## Locate(T?, IForwardListNode< T >, Func< T?, T?, bool >?)
 ```csharp
-IForwardListNode<T>? Locate(T item, IForwardListNode<T> startNode, Func<T, T, bool>? eqls = null)
+IForwardListNode<T>? Locate(T? item, IForwardListNode<T> startNode, Func<T?, T?, bool>? eqls = null)
 {
   require
   {
-    startNode != null;
     Contains(startNode);
   }
   ensure
@@ -173,9 +171,9 @@ IForwardListNode<T>? Locate(T item, IForwardListNode<T> startNode, Func<T, T, bo
   }
 }
 ```
-## LocateForward(Func\<T, bool>)
+## LocateForward(Func< T?, bool >)
 ```csharp
-IForwardListNode<T> LocateForward(Func<T, bool> predicate)
+IForwardListNode<T> LocateForward(Func<T?, bool> predicate)
 {
   require
   {
@@ -190,13 +188,12 @@ IForwardListNode<T> LocateForward(Func<T, bool> predicate)
   }
 }
 ```
-## LocateForward(IForwardListNode\<T>, Func\<T, bool>)
+## LocateForward(IForwardListNode< T? >, Func< T?, bool >)
 ```csharp
-IForwardListNode<T> LocateForward(IForwardListNode<T> startNode, Func<T, bool> predicate)
+IForwardListNode<T> LocateForward(IForwardListNode<T> startNode, Func<T?, bool> predicate)
 {
   require
   {
-    startNode != null;
     Contains(startNode);
     predicate != null;
   }
@@ -210,9 +207,9 @@ IForwardListNode<T> LocateForward(IForwardListNode<T> startNode, Func<T, bool> p
   }
 }
 ```
-## LocateForward(T, Func\<T, T, bool>?)
+## LocateForward(T?, Func< T?, T?, bool >?)
 ```csharp
-IForwardListNode<T> LocateForward(T item, Func<T, T, bool>? eqls = null)
+IForwardListNode<T> LocateForward(T? item, Func<T?, T?, bool>? eqls = null)
 {
   require
   {
@@ -227,13 +224,12 @@ IForwardListNode<T> LocateForward(T item, Func<T, T, bool>? eqls = null)
   }
 }
 ```
-## LocateForward(T, IForwardListNode\<T>, Func\<T, T, bool>?)
+## LocateForward(T?, IForwardListNode< T >, Func< T?, T?, bool >?)
 ```csharp
-IForardListNode<T> LocateForward(T item, IForwardListNode<T> startNode, Func<T, T, bool>? eqls = null)
+IForardListNode<T> LocateForward(T? item, IForwardListNode<T> startNode, Func<T?, T?, bool>? eqls = null)
 {
   require
   {
-    startNode != null;
     Contains(startNode);
   }
   ensure
@@ -245,20 +241,19 @@ IForardListNode<T> LocateForward(T item, IForwardListNode<T> startNode, Func<T, 
   }
 }
 ```
-# class ForwardList\<T>.Node
+# class ForwardList< T >.Node
 ```csharp
-//ver 1
 class Node: IForwardListNode<T>
 {
-  public Node(T item, Node? nextNode);
-  public ref T Item {get;}
+  public Node(T? item, Node? nextNode);
+  public ref T? Item {get;}
   public Node? NextNode {get;}
   public bool IsReachableFrom(IForwardListNode<T> node);
 }
 ```
-## Node(T, Node?)
+## Node(T?, Node?)
 ```csharp
-public Node(T item, Node? nextNode)
+public Node(T? item, Node? nextNode)
 {
   ensure
   {
@@ -267,7 +262,7 @@ public Node(T item, Node? nextNode)
   }
 }
 ```
-## IsReachableFrom(IForwardListNode\<T>)
+## IsReachableFrom(IForwardListNode< T >)
 ```csharp
 public bool IsReachableFrom(IForwardListNode<T> node)
 {
@@ -277,44 +272,43 @@ public bool IsReachableFrom(IForwardListNode<T> node)
   }
 }
 ```
-# class ForwardList\<T>
+# class ForwardList< T >
 ```csharp
-//ver 1
 class ForwardList<T>: IReadOnlyForwardList<T>
 {
   public ForwardList();
-  public ForwardList(T item);
-  public ForwardList(IEnumerable<T> items);
-  public ForwardList(ReadOnlySpan<T> items);
+  public ForwardList(T? item);
+  public ForwardList(IEnumerable<T?> items);
+  public ForwardList(ReadOnlySpan<T?> items);
   public ForwardList(Node node);
-  public ForwardList(ForwardList<T> other, Func<T, T>? clone = null);
+  public ForwardList(ForwardList<T> other, Func<T?, T?>? clone = null);
   public bool IsEmpty {get;}
   public Node FirstNode {get;}
   public IEnumerable<Node> Nodes {get;}
   public IEnumerator<T> GetEnumerator();
   public int GetCount();
-  public bool Contains(T item, Func<T, T, bool>? eqls = null);
-  public bool Contains(Func<T, bool> predicate);
+  public bool Contains(T? item, Func<T?, T?, bool>? eqls = null);
+  public bool Contains(Func<T?, bool> predicate);
   public bool Contains(IForwardListNode<T> node);
-  public Node? Locate(T item, Func<T, T, bool> eqls = null);
-  public Node? Locate(Func<T, bool> predicate); 
-  public Node? Locate(T item, IForwardListNode<T> startNode, Func<T, T, bool> eqls = null);
-  public Node? Locate(IForwardListNode<T> startNode, Func<T, bool> predicate);
-  public Node LocateForward(T item, Func<T, T, bool> eqls = null);
-  public Node LocateForward(Func<T, bool> predicate); 
-  public Node LocateForward(T item, IForwardListNode<T> startNode, Func<T, T, bool> eqls = null);
-  public Node LocateForward(IForwardListNode<T> startNode, Func<T, bool> predicate);
-  public void Prepend(T item);
-  public Node? Prepend(IEnumerable<T> items);
-  public Node? Prepend(ReadOnlySpan<T> items);
+  public Node? Locate(T? item, Func<T?, T?, bool> eqls = null);
+  public Node? Locate(Func<T?, bool> predicate); 
+  public Node? Locate(T? item, IForwardListNode<T> startNode, Func<T?, T?, bool> eqls = null);
+  public Node? Locate(IForwardListNode<T> startNode, Func<T?, bool> predicate);
+  public Node LocateForward(T? item, Func<T?, T?, bool> eqls = null);
+  public Node LocateForward(Func<T?, bool> predicate); 
+  public Node LocateForward(T? item, IForwardListNode<T> startNode, Func<T?, T?, bool> eqls = null);
+  public Node LocateForward(IForwardListNode<T> startNode, Func<T?, bool> predicate);
+  public void Prepend(T? item);
+  public Node? Prepend(IEnumerable<T?> items);
+  public Node? Prepend(ReadOnlySpan<T?> items);
   public Node Prepend(Node node);
-  public Node Insert(T item, Node prevNode);
-  public Node? Insert(IEnumerable<T> items, Node prevNode);
-  public Node? Insert(ReadOnlySpan<T> items, Node prevNode);
+  public Node Insert(T? item, Node prevNode);
+  public Node? Insert(IEnumerable<T?> items, Node prevNode);
+  public Node? Insert(ReadOnlySpan<T?> items, Node prevNode);
   public Node Insert(Node node, Node prevNode);
   public Node RemoveFirstNode();
-  public void Remove(Node node, int count = 1);
-  public Node? RemoveForward(Node node, int count = 1);
+  public void Remove(Node startNode, int count = 1);
+  public Node? RemoveForward(Node startNode, int count = 1);
   public Node? StripForward(Node node);
   public void Clear();
 }
@@ -329,9 +323,9 @@ public ForwardList()
   }
 }
 ```
-## ForwardList(ForwardList\<T>, Func\<T, T>?)
+## ForwardList(ForwardList< T >, Func\<T?, T?>?)
 ```csharp
-public ForwardList(ForwardList<T> other, Func<T, T>? clone = null)
+public ForwardList(ForwardList<T> other, Func<T?, T?>? clone = null)
 {
   require
   {
@@ -344,9 +338,9 @@ public ForwardList(ForwardList<T> other, Func<T, T>? clone = null)
   }
 }
 ```
-## ForwardList(IEnumerable\<T>)
+## ForwardList(IEnumerable< T? >)
 ```csharp
-public ForwardList(IEnumerable<T> items)
+public ForwardList(IEnumerable<T?> items)
 {
   require
   {
@@ -356,10 +350,6 @@ public ForwardList(IEnumerable<T> items)
   {
     GetCount() == items.Count();
     this.SequenceEqual(items);
-  }
-  throws
-  {
-    OverflowException;
   }
 }
 ```
@@ -378,9 +368,9 @@ public ForwardList(Node node)
   }
 }
 ```
-## ForwardList(ReadOnlySpan\<T>)
+## ForwardList(ReadOnlySpan< T? >)
 ```csharp
-public ForwardList(ReadOnlySpan<T> items)
+public ForwardList(ReadOnlySpan<T?> items)
 {
   ensure
   {
@@ -389,9 +379,9 @@ public ForwardList(ReadOnlySpan<T> items)
   }
 }
 ```
-## ForwardList(T)
+## ForwardList(T?)
 ```csharp
-public ForwardList(T item)
+public ForwardList(T? item)
 {
   ensure
   {
@@ -410,14 +400,13 @@ public void Clear()
   }
 }
 ```
-## Insert(IEnumerable\<T>, Node)
+## Insert(IEnumerable< T? >, Node)
 ```csharp
-public Node? Insert(IEnumerable<T> items, Node prevNode)
+public Node? Insert(IEnumerable<T?> items, Node prevNode)
 {
   require
   {
     items != null;
-    prevNode != null;
     Contains(prevNode);
     GetCount() <= int.MaxValue - items.Count();
   }
@@ -444,7 +433,6 @@ public Node Insert(Node node, Node prevNode)
   {
     node != null;
     !Nodes.Last().Reachable(node);
-    prevNode != null;
     Contains(prevNode);
     GetCount() <= int.MaxValue - EnumerableEx.Emit(n => n.NextNode, node, null).Count();
   }
@@ -460,13 +448,12 @@ public Node Insert(Node node, Node prevNode)
   }
 }
 ```
-## Insert(ReadOnlySpan\<T>, Node)
+## Insert(ReadOnlySpan< T? >, Node)
 ```csharp
-public Node? Insert(ReadOnlySpan<T> items, Node prevNode)
+public Node? Insert(ReadOnlySpan<T?> items, Node prevNode)
 {
   require
   {
-    prevNode != null;
     Contains(prevNode);
     GetCount() <= int.MaxValue - items.Length;
   }
@@ -483,13 +470,12 @@ public Node? Insert(ReadOnlySpan<T> items, Node prevNode)
   }
 }
 ```
-## Insert(T, Node)
+## Insert(T?, Node)
 ```csharp
-public Node Insert(T item, Node prevNode)
+public Node Insert(T? item, Node prevNode)
 {
   require
   {
-    prevNode != null;
     Contains(prevNode);
     GetCount() < int.MaxValue;
   }
@@ -502,9 +488,9 @@ public Node Insert(T item, Node prevNode)
   }
 }
 ```
-## Prepend(IEnumerable\<T>)
+## Prepend(IEnumerable< T? >)
 ```csharp
-public Node? Prepend(IEnumerable<T> items)
+public Node? Prepend(IEnumerable<T?> items)
 {
   require
   {
@@ -542,9 +528,9 @@ public Node Prepend(Node node)
   }
 }
 ```
-## Prepend(ReadOnlySpan\<T>)
+## Prepend(ReadOnlySpan< T? >)
 ```csharp
-public Node? Prepend(ReadOnlySpan<T> items)
+public Node? Prepend(ReadOnlySpan<T?> items)
 {
   require
   {
@@ -561,9 +547,9 @@ public Node? Prepend(ReadOnlySpan<T> items)
   }
 }
 ```
-## Prepend(T)
+## Prepend(T?)
 ```csharp
-public void Prepend(T item)
+public void Prepend(T? item)
 {
   require
   {
@@ -580,20 +566,19 @@ public void Prepend(T item)
 ```
 ## Remove(Node, int)
 ```csharp
-public void Remove(Node node, int count = 1)
+public void Remove(Node stratNode, int count = 1)
 {
   require
   {
-    node != null;
-    Contains(node);
-    0 <= count <= Nodes.SkipWhile(n => n != node).Count();
+    Contains(startNode);
+    0 <= count <= Nodes.SkipWhile(n => n != startNode).Count();
   }
   ensure
   {
     GetCount() == old GetCount() - count;
-    count == 0 || !Contains(node);
-    count == 0 || EnumerableEx.Emit(n => n.NextNode, node, null).All(n => !Contains(n));
-    count == 0 || EnumerableEx.Emit(n => n.NextNode, node, null).Count() == count;
+    count == 0 || !Contains(startNode);
+    count == 0 || EnumerableEx.Emit(n => n.NextNode, startNode, null).All(n => !Contains(n));
+    count == 0 || EnumerableEx.Emit(n => n.NextNode, startNode, null).Count() == count;
   }
 }
 ```
@@ -616,20 +601,19 @@ public Node RemoveFirstNode()
 ```
 ## RemoveForward(Node, int)
 ```csharp
-public Node? RemoveForward(Node node, int count = 1)
+public Node? RemoveForward(Node startNode, int count = 1)
 {
   require
   {
-    node != null;
-    Contains(node);
-    node.NextNode != null || count == 0;
-    0 <= count < Nodes.SkipWhile(n => n != node).Count();
+    Contains(startNode);
+    startNode.NextNode != null || count == 0;
+    0 <= count < Nodes.SkipWhile(n => n != startNode).Count();
   }
   ensure
   {
     (Result == null) == (count == 0);
-    count == 0 || Result == old node.NextNode;
-    Result == null || node.NextNode = old Nodes.SkipWhile(n => n != Result).Take(count).NextNode;
+    count == 0 || Result == old startNode.NextNode;
+    Result == null || startNode.NextNode = old Nodes.SkipWhile(n => n != Result).Take(count).NextNode;
     GetCount() == old GetCount() - count;
     EnumerableEx.Emit(n => n.NextNode, Result, null).All(n => !Contains(n));
   }
@@ -641,7 +625,6 @@ public Node? StripForward(Node node)
 {
   require
   {
-    node != null;
     Contains(node);
   }
   ensure

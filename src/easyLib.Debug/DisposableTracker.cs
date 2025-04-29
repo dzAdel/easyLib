@@ -19,7 +19,9 @@ public sealed class DisposableTracker
                     Array.Resize(ref m_disposables, m_ndxInsert << 1);
 
                 m_disposables[m_ndxInsert++] = dispInfo;
-                ++m_topCount;
+
+                if(m_topCount < m_ndxInsert)
+                    m_topCount = m_ndxInsert;
             }
     }
 
@@ -87,9 +89,6 @@ public sealed class DisposableTracker
 
         logger?.WriteLine(str);
         System.Diagnostics.Debug.WriteLine(str);
-
-        if (count > 0 && Debugger.IsAttached)
-            Debugger.Break();
     }
 
 
@@ -107,7 +106,7 @@ public sealed class DisposableTracker
         {
             DisposbaleInfo? dispInfo = m_disposables[i];
 
-            if (dispInfo != null && ReferenceEquals(dispInfo.Item, disposable))
+            if (ReferenceEquals(dispInfo?.Item, disposable))
                 return true;
         }
 
