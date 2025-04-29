@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace easyLib.Extras.IO;
+namespace easyLib.IO;
 
 public sealed partial class LRUFileStream : Stream, IDestructible
 {

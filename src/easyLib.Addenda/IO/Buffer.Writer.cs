@@ -1,6 +1,6 @@
 ﻿using easyLib.IO;
 
-namespace easyLib.Extras.IO;
+namespace easyLib.IO;
 
 partial class Buffer
 {

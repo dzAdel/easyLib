@@ -1,10 +1,9 @@
 ﻿using easyLib.Extensions;
-using easyLib.Extras.IO;
 using easyLib.IO;
 using easyLib.Test;
-using Buffer = easyLib.Extras.IO.Buffer;
+using Buffer = easyLib.IO.Buffer;
 
-namespace easyLibTester.Extras;
+namespace easyLibTester.Addenda;
 
 sealed class BufferTest : UnitTest<Buffer>
 {

@@ -5,7 +5,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-		<RootNamespace>easyLib.Extras</RootNamespace>
+		<RootNamespace>easyLib</RootNamespace>
 		<AssemblyVersion>0.1.0.0</AssemblyVersion>
 		<FileVersion>$(AssemblyVersion)</FileVersion>
 		<Authors>chez.adel@outlook.fr</Authors>

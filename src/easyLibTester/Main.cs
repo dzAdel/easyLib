@@ -4,7 +4,7 @@ using easyLibTester.Core.ADT;
 using easyLibTester.Core.Disposables;
 using easyLibTester.Core.Extensions;
 using easyLibTester.Core.IO;
-using easyLibTester.Extras;
+using easyLibTester.Addenda;
 using easyLibTester.Test;
 
 TestManager testManager = new();

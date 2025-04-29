@@ -1,4 +1,4 @@
-﻿namespace easyLib.Extras.IO;
+﻿namespace easyLib.IO;
 
 partial class LRUFileStream
 {
