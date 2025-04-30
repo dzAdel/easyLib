@@ -4,90 +4,23 @@ namespace easyLib.Test;
 
 public static class SampleFactory
 {
-    public static byte NextByte
-    {
-        get
-        {
-            lock (m_rand)
-                return (byte)m_rand.Next(byte.MinValue, byte.MaxValue);
-        }
-    }
-    public static sbyte NextSByte
-    {
-        get
-        {
-            lock (m_rand)
-                return (sbyte)m_rand.Next(sbyte.MinValue, sbyte.MaxValue);
-        }
-    }
-
-    public static short NextShort
-    {
-        get
-        {
-            lock (m_rand)
-                return (short)m_rand.Next(short.MinValue, short.MaxValue);
-        }
-    }
-
-    public static ushort NextUShort
-    {
-        get
-        {
-            lock (m_rand)
-                return (ushort)m_rand.Next(ushort.MinValue, ushort.MaxValue);
-        }
-    }
-
-    public static int NextInt
-    {
-        get
-        {
-            lock (m_rand)
-                return m_rand.Next(int.MinValue, int.MaxValue);
-        }
-    }
-
-    public static uint NextUInt
-    {
-        get
-        {
-            lock (m_rand)
-                return (uint)m_rand.NextInt64(0, uint.MaxValue);
-        }
-    }
-
-    public static long NextLong
-    {
-        get
-        {
-            lock (m_rand)
-                return m_rand.NextInt64(long.MinValue, long.MaxValue);
-        }
-    }
-
-    public static ulong NextULong
-    {
-        get
-        {
-            double d;
-
-            lock (m_rand)
-                d = m_rand.NextDouble();
-
-            return (ulong)(d * ulong.MaxValue);
-        }
-    }
+    public static byte NextByte => (byte)Random.Shared.Next(byte.MinValue, byte.MaxValue);
+    public static sbyte NextSByte => (sbyte)Random.Shared.Next(sbyte.MinValue, sbyte.MaxValue);
+    public static short NextShort => (short)Random.Shared.Next(short.MinValue, short.MaxValue);
+    public static ushort NextUShort => (ushort)Random.Shared.Next(ushort.MinValue, ushort.MaxValue);
+    public static int NextInt => Random.Shared.Next(int.MinValue, int.MaxValue);
+    public static uint NextUInt => (uint)Random.Shared.NextInt64(0, uint.MaxValue);
+    public static long NextLong => Random.Shared.NextInt64(long.MinValue, long.MaxValue);
+    public static ulong NextULong => (ulong)(Random.Shared.NextDouble() * ulong.MaxValue);
+    public static bool NextBool => Random.Shared.Next(0, 2) == 1;
+    public static char NextChar => (char)Random.Shared.Next(0, '\uD800');
+    public static string NextString => CreateStrings().First();
 
     public static float NextFloat
     {
         get
         {
-            float f;
-
-            lock (m_rand)
-                f = m_rand.NextSingle();
-
+            float f = Random.Shared.NextSingle();
             return float.MinValue - (f * float.MinValue) + (f * float.MaxValue);
         }
     }
@@ -96,11 +29,7 @@ public static class SampleFactory
     {
         get
         {
-            double d;
-
-            lock (m_rand)
-                d = m_rand.NextDouble();
-
+            double d = Random.Shared.NextDouble();
             return double.MinValue - (d * double.MinValue) + (d * double.MaxValue);
         }
     }
@@ -109,138 +38,65 @@ public static class SampleFactory
     {
         get
         {
-            decimal d;
-
-            lock (m_rand)
-                d = (decimal)m_rand.NextDouble();
-
+            decimal d = (decimal)Random.Shared.NextDouble();
             return decimal.MinValue - (d * decimal.MinValue) + (d * decimal.MaxValue);
         }
     }
-
-    public static bool NextBool
-    {
-        get
-        {
-            lock (m_rand)
-                return m_rand.Next(0, 2) == 1;
-        }
-    }
-
-    public static char NextChar
-    {
-        get
-        {
-            lock (m_rand)
-                return (char)m_rand.Next(0, '\uD800');
-        }
-    }
-
-    public static string NextString => CreateStrings().First();
 
     public static IEnumerable<byte> CreateBytes(byte min = byte.MinValue, byte limit = byte.MaxValue)
     {
         require(min < limit);
 
-        int n;
-
         while (true)
-        {
-            lock (m_rand)
-                n = m_rand.Next(min, limit);
-
-            yield return (byte)n;
-        }
+            yield return (byte)Random.Shared.Next(min, limit);
     }
 
     public static IEnumerable<sbyte> CreateSBytes(sbyte min = sbyte.MinValue, sbyte limit = sbyte.MaxValue)
     {
         require(min < limit);
 
-        int n;
-
         while (true)
-        {
-            lock (m_rand)
-                n = m_rand.Next(min, limit);
-
-            yield return (sbyte)n;
-        }
+            yield return (sbyte)Random.Shared.Next(min, limit);
     }
 
     public static IEnumerable<short> CreateShorts(short min = short.MinValue, short limit = short.MaxValue)
     {
         require(min < limit);
 
-        int n;
-
         while (true)
-        {
-            lock (m_rand)
-                n = m_rand.Next(min, limit);
-
-            yield return (short)n;
-        }
+            yield return (short)Random.Shared.Next(min, limit);
     }
 
     public static IEnumerable<ushort> CreateUShorts(ushort min = ushort.MinValue, ushort limit = ushort.MaxValue)
     {
         require(min < limit);
 
-        int n;
-
         while (true)
-        {
-            lock (m_rand)
-                n = m_rand.Next(min, limit);
-
-            yield return (ushort)n;
-        }
+            yield return (ushort)Random.Shared.Next(min, limit);
     }
 
     public static IEnumerable<int> CreateInts(int min = int.MinValue, int limit = int.MaxValue)
     {
         require(min < limit);
 
-        int n;
-
         while (true)
-        {
-            lock (m_rand)
-                n = m_rand.Next(min, limit);
-
-            yield return n;
-        }
+            yield return Random.Shared.Next(min, limit);
     }
 
     public static IEnumerable<uint> CreateUInts(uint min = uint.MinValue, uint limit = uint.MaxValue)
     {
         require(min < limit);
 
-        long l;
-
         while (true)
-        {
-            lock (m_rand)
-                l = m_rand.NextInt64(min, limit);
-
-            yield return (uint)l;
-        }
+            yield return (uint)Random.Shared.NextInt64(min, limit);
     }
 
     public static IEnumerable<long> CreateLongs(long min = long.MinValue, long limit = long.MaxValue)
     {
         require(min < limit);
 
-        long l;
-
         while (true)
-        {
-            lock (m_rand)
-                l = m_rand.NextInt64(min, limit);
-
-            yield return l;
-        }
+            yield return Random.Shared.NextInt64(min, limit);
     }
 
     public static IEnumerable<ulong> CreateULongs(ulong min = ulong.MinValue, ulong limit = ulong.MaxValue)
@@ -251,9 +107,8 @@ public static class SampleFactory
 
         while (true)
         {
-            lock (m_rand)
-                d = m_rand.NextDouble();
-
+            //do not factor out d in case of overflow (MaxValue - MinValue)
+            d = Random.Shared.NextDouble();
             yield return min - (ulong)(d * min) + (ulong)(d * limit);
         }
     }
@@ -268,10 +123,9 @@ public static class SampleFactory
 
         while (true)
         {
-            lock (m_rand)
-                f = m_rand.NextSingle();
+            f = Random.Shared.NextSingle();
 
-            f = min - (f * min) + (f * limit);
+            f = min - (f * min) + (f * limit); //do not factor out f in case of overflow (MaxValue - MinValue)
             yield return f >= limit || f < min ? min : f;
         }
     }
@@ -286,10 +140,9 @@ public static class SampleFactory
 
         while (true)
         {
-            lock (m_rand)
-                d = m_rand.NextDouble();
+            d = Random.Shared.NextDouble();
 
-            d = min - (d * min) + (d * limit);
+            d = min - (d * min) + (d * limit); //do not factor out d in case of overflow (MaxValue - MinValue)
             yield return d >= limit || d < min ? min : d;
         }
     }
@@ -302,40 +155,25 @@ public static class SampleFactory
 
         while (true)
         {
-            lock (m_rand)
-                d = (decimal)m_rand.NextDouble();
+            d = (decimal)Random.Shared.NextDouble();
 
-            d = min - (d * min) + (d * limit);
+            d = min - (d * min) + (d * limit); //do not factor out d in case of overflow (MaxValue - MinValue)
             yield return d >= limit || d < min ? min : d;
         }
     }
 
     public static IEnumerable<bool> CreateBools()
     {
-        int n;
-
         while (true)
-        {
-            lock (m_rand)
-                n = m_rand.Next(0, 2);
-
-            yield return n == 1;
-        }
+            yield return Random.Shared.Next(0, 2) == 1;
     }
 
-    public static IEnumerable<char> CreateChars(char min = char.MinValue, char limit = '\ud800')
+    public static IEnumerable<char> CreateChars(char min = char.MinValue, char limit = '\uD800')
     {
         require(min < limit);
 
-        int n;
-
         while (true)
-        {
-            lock (m_rand)
-                n = m_rand.Next(min, limit);
-
-            yield return (char)n;
-        }
+            yield return (char)Random.Shared.Next(min, limit);
     }
 
     public static IEnumerable<string> CreateStrings(int minLen = 0, int lenLimit = byte.MaxValue)
@@ -349,14 +187,11 @@ public static class SampleFactory
             const int charLimit = '\uD800';
             char[] chars;
 
-            lock (m_rand)
-            {
-                len = m_rand.Next(minLen, lenLimit);
-                chars = ArrayPool<char>.Shared.Rent(len);
+            len = Random.Shared.Next(minLen, lenLimit);
+            chars = ArrayPool<char>.Shared.Rent(len);
 
-                for (int i = 0; i < len; ++i)
-                    chars[i] = (char)m_rand.Next(0, charLimit);
-            }
+            for (int i = 0; i < len; ++i)
+                chars[i] = (char)Random.Shared.Next(0, charLimit);
 
             string result = new(chars, 0, len);
             ArrayPool<char>.Shared.Return(chars);
@@ -364,7 +199,4 @@ public static class SampleFactory
             yield return result;
         }
     }
-
-    //private:
-    readonly static Random m_rand = new(); //lock
 }

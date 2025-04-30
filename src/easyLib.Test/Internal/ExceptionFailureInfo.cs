@@ -23,7 +23,7 @@ sealed class ExceptionFailureInfo : FailureInfo
     //protected:
     protected override IEnumerable<string> GetReport()
     {
-        if (Action != null)
+        if (!string.IsNullOrWhiteSpace(Action))
             yield return $"Tested action: {Action}";
 
         yield return $"Expected exception: {ExpectedExceptionType?.ToString() ?? "None"}";
