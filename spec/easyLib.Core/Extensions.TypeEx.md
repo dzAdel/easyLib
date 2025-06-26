@@ -1,6 +1,5 @@
 # interface ISimpleTypeTraits
 ```csharp
-///ver 1
 public interface ISimpleTypeTraits
 {
   bool IsNumeric { get; }
@@ -20,7 +19,6 @@ Invariant
 ```
 # interface INumericTypeTraits
 ```csharp
-//ver 1
 public interface INumericTypeTraits: ISimpleTypeTraits
 {
   bool IsSigned { get; }
@@ -28,7 +26,6 @@ public interface INumericTypeTraits: ISimpleTypeTraits
 ```
 # class TypeEx
 ```csharp
-//ver 1
 public static class TypeEx
 {
   public static bool Implements<T>(this Type type);
@@ -62,7 +59,7 @@ public static ISimpleTypeTraits GetSimpleTypeTraits(this Type type)
   }
 }
 ```
-## Implements\<T>(this Type)
+## Implements< T >(this Type)
 ```csharp
 public static bool Implements<T>(this Type type)
 {

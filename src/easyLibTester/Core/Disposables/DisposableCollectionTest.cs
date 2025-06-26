@@ -9,6 +9,7 @@ sealed class DisposableCollectionTest : UnitTest<DisposableCollection>
         base(nameof(DisposableCollectionTest))
     { }
 
+
     //protected:
     protected override IInvariantTester DefineInvariant(DisposableCollection obj,
                                                         IInvariantTester invTester)
@@ -25,7 +26,7 @@ sealed class DisposableCollectionTest : UnitTest<DisposableCollection>
     void TestDispose()
     {
         DisposableCollection dc = new();
-        List<Disposable> sample = new();
+        List<Disposable> sample = [];
         int count = SampleFactory.NextByte;
 
         for (int i = 0; i < count; ++i)
@@ -44,7 +45,7 @@ sealed class DisposableCollectionTest : UnitTest<DisposableCollection>
     void TestClear()
     {
         using DisposableCollection dc = new();
-        List<Disposable> sample = new();
+        List<Disposable> sample = [];
         int count = SampleFactory.NextByte;
 
         for (int i = 0; i < count; ++i)
@@ -72,7 +73,7 @@ sealed class DisposableCollectionTest : UnitTest<DisposableCollection>
 
     void TestAdd()
     {
-        List<Disposable> sample = new();
+        List<Disposable> sample = [];
         using DisposableCollection dc = new();
 
         TestInvariant(dc);

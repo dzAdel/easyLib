@@ -14,7 +14,7 @@ public static class ArrayPool
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void Free<T>(T[] array)
+    public static void Free<T>(T[]? array)
     {
         if (array != null)
             System.Buffers.ArrayPool<T>.Shared.Return(array);

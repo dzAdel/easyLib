@@ -18,7 +18,7 @@ sealed class ArrayExTest : UnitTest
         int szSlice = SampleFactory.NextByte + 1;
         int sliceCount = SampleFactory.NextByte;
         int offset = SampleFactory.NextByte;
-        byte[] sample = SampleFactory.CreateBytes().Take(szSlice * sliceCount + offset).ToArray();
+        byte[] sample = [.. SampleFactory.CreateBytes().Take((szSlice * sliceCount) + offset)];
         byte[] reversed = new byte[sample.Length];
         Array.Copy(sample, reversed, sample.Length);
         reversed.ReverseSlice(szSlice, sliceCount, offset);

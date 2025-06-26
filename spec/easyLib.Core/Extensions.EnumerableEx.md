@@ -1,6 +1,5 @@
 # class EnumerableEx
 ```csharp
-//ver 1
 static class EnumerableEx
 {
   public static IEnumerable<T> Emit<T>(Func<T, T> generate, T initValue, T stopValue);
@@ -12,7 +11,7 @@ static class EnumerableEx
   public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> src);  
 }
 ```
-## All<T>(this IEnumerable<T>, Func<T, int, bool>)
+## All< T >(this IEnumerable< T >, Func< T, int, bool >)
 ```csharp
 public static bool All<T>(this IEnumerable<T> src, Func<T, int, bool> predicate)
 {
@@ -27,7 +26,7 @@ public static bool All<T>(this IEnumerable<T> src, Func<T, int, bool> predicate)
   }
 }
 ```
-## Emit<T>(Func<T, T>, T, T)
+## Emit< T >(Func< T, T >, T, T)
 ```csharp
 public static IEnumerable<T> Emit<T>(Func<T, T> generate, T initValue, T stopValue)
 {
@@ -43,7 +42,7 @@ public static IEnumerable<T> Emit<T>(Func<T, T> generate, T initValue, T stopVal
   }
 }
 ```
-## IndexOf<T>(this IEnumerable<T>, T, Func\<T, T, bool>?)
+## IndexOf< T >(this IEnumerable< T >, T, Func< T, T, bool >?)
 ```csharp
 public static int IndexOf<T>(this IEnumerable<T> src, T item, Func<T, T, bool>? equals = null)
 {
@@ -59,7 +58,7 @@ public static int IndexOf<T>(this IEnumerable<T> src, T item, Func<T, T, bool>? 
   }
 }
 ```
-## IsOrdered<T>(this IEnumerable<T>, Func<T, T, bool>)
+## IsOrdered< T >(this IEnumerable< T >, Func< T, T, bool >)
 ```csharp
 public static bool IsOrdered<T>(this IEnumerable<T> src, Func<T, T, bool> precedes)
 {
@@ -77,7 +76,7 @@ public static bool IsOrdered<T>(this IEnumerable<T> src, Func<T, T, bool> preced
   }
 }
 ```
-## IsSorted<T>(this IEnumerable<T>, Comparison<T>?)
+## IsSorted< T >(this IEnumerable< T >, Comparison< T >?)
 ```csharp
 public static bool IsSorted<T>(this IEnumerable<T> src, Comparison<T>? compare = null)
 {
@@ -93,7 +92,7 @@ public static bool IsSorted<T>(this IEnumerable<T> src, Comparison<T>? compare =
   }
 }
 ```
-## MinMax<T>(this IEnumerable<T>, Comparison<T>?)
+## MinMax< T >(this IEnumerable< T >, Comparison< T >?)
 ```csharp
 public static (T min, T max) MinMax<T>(this IEnumerable<T> src, Comparison<T>? compare = null)
 {
@@ -112,7 +111,7 @@ public static (T min, T max) MinMax<T>(this IEnumerable<T> src, Comparison<T>? c
   }
 }
 ```
-## Shuffle<T>(this IEnumerable<T>)
+## Shuffle< T >(this IEnumerable< T >)
 ```csharp
 public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> src)
 {

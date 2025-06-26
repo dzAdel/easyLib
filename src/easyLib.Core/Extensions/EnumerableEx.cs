@@ -18,7 +18,7 @@ public static class EnumerableEx
         return true;
     }
 
-    public static bool IsSorted<T>(this IEnumerable<T> src, Comparison<T>? compare = null)
+    public static bool IsSorted<T>(this IEnumerable<T> src, Func<T, T, int>? compare = null)
     {
         require(src != null);
         require(compare != null || typeof(T).Implements<IComparable<T>>() || typeof(T).Implements<IComparable>());
@@ -95,6 +95,7 @@ public static class EnumerableEx
 
         eqls ??= EqualityComparer<T>.Default.Equals;
         int ndx = 0;
+
         using IEnumerator<T> enumerator = src.GetEnumerator();
 
         while (enumerator.MoveNext())
@@ -108,7 +109,7 @@ public static class EnumerableEx
         return -1;
     }
 
-    public static (T min, T max) MinMax<T>(this IEnumerable<T> src, Comparison<T>? compare = null)
+    public static (T min, T max) MinMax<T>(this IEnumerable<T> src, Func<T, T, int>? compare = null)
     {
         require(src != null);
         require(src.Any());
@@ -143,7 +144,7 @@ public static class EnumerableEx
         return src.OrderBy(_ => rand.Next());
     }
 
-    public static IEnumerable<T> Emit<T>(Func<T, T> generate, T initValue, T stopValue) //TODO: not an extension method. move it.
+    public static IEnumerable<T> Emit<T>(Func<T, T> generate, T initValue, T stopValue)
     {
         require(generate != null);
 

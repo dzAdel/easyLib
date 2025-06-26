@@ -26,7 +26,7 @@ sealed class ConcurrentDisposableCollectionTest : UnitTest<ConcurrentDisposableC
     void TestDispose()
     {
         ConcurrentDisposableCollection dc = new();
-        List<Disposable> sample = new();
+        List<Disposable> sample = [];
         int count = SampleFactory.NextByte;
 
         for (int i = 0; i < count; ++i)
@@ -44,7 +44,7 @@ sealed class ConcurrentDisposableCollectionTest : UnitTest<ConcurrentDisposableC
 
     void TestClear()
     {
-        ConcurrentBag<Disposable> sample = new();
+        ConcurrentBag<Disposable> sample = [];
         using ConcurrentDisposableCollection dc = new();
 
 
@@ -72,7 +72,7 @@ sealed class ConcurrentDisposableCollectionTest : UnitTest<ConcurrentDisposableC
 
     void TestAdd()
     {
-        ConcurrentBag<Disposable> sample = new();
+        ConcurrentBag<Disposable> sample = [];
         using ConcurrentDisposableCollection dc = new();
 
         TestInvariant(dc);

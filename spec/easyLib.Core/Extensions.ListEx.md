@@ -1,6 +1,5 @@
 # class ListEx
 ```csharp
-//ver 1
 public static class ListEx
 {  
   public static void Put<T>(this IList<T> lst, T item, int ndx);
@@ -11,7 +10,7 @@ public static class ListEx
                                Func<T, T, bool>? equals = null);
 }
 ```
-## IndexOf\<T>(this IReadOnlyList\<T>, T, Func\<T, T, bool>?)
+## IndexOf< T >(this IReadOnlyList< T >, T, Func< T, T, bool >?)
 ```csharp
 public static int IndexOf<T>(this IReadOnlyList<T> lst, T elt, int ndxStart, 
                              Func<T, T, bool>? eql = null)
@@ -29,7 +28,7 @@ public static int IndexOf<T>(this IReadOnlyList<T> lst, T elt, int ndxStart,
   }
 }
 ```
-## Put\<T>(this IList\<T>, IEnumerabe\<T>, int)
+## Put< T >(this IList< T >, IEnumerabe< T >, int)
 ```csharp
 public static int Put<T>(this IList<T> lst, IEnumerabe<T> items, int ndxDest)
 {
@@ -47,7 +46,7 @@ public static int Put<T>(this IList<T> lst, IEnumerabe<T> items, int ndxDest)
   }
 }
 ```
-## Put\<T>(IList\<T>, T, int)
+## Put< T >(IList< T >, T, int)
 ```csharp
 public static void Put<T>(this IList<T> lst, T item, int ndx)
 {

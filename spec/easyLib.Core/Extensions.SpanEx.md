@@ -1,13 +1,12 @@
 # Class SpanEx
 ```csharp
-//ver 1
 static class SpanEx
 {
   public static void ReverseSlice(this Span<byte> bytes, int szSlice);
   public static IEnumerable<T> ToEnumerable<T>(this Span<T> span);
 }
 ```
-## ReverseSlice(this Span\<byte>, int)
+## ReverseSlice(this Span< byte >, int)
 ```csharp
 public static void ReverseSlice(this Span<byte> bytes, int szSlice)
 {
@@ -18,7 +17,7 @@ public static void ReverseSlice(this Span<byte> bytes, int szSlice)
   }
 }
 ```
-## ToEnumerable\<T>(this Span\<T>)
+## ToEnumerable< T >(this Span< T >)
 ```csharp
 public static IEnumerable<T> ToEnumerable<T>(this Span<T> span)
 {

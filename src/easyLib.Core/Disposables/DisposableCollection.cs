@@ -18,27 +18,6 @@ public sealed class DisposableCollection : IDisposableCollection, IDestructible
         DisposablesTracker.Add(this);
     }
 
-    public bool IsDisposed { get; private set; }
-
-    public void Add(IDisposable disposable)
-    {
-        require(disposable != null);
-        require(!Contains(disposable));
-
-        m_disposables.Push(disposable);
-    }
-
-    public bool Contains(IDisposable? disposable) => disposable != null && m_disposables.Contains(disposable);
-
-    public void Clear(bool disposeAll)
-    {
-        if (disposeAll)
-            while (m_disposables.Count > 0)
-                m_disposables.Pop().Dispose();
-        else
-            m_disposables.Clear();
-    }
-
     public void Dispose()
     {
         if (!IsDisposed)
@@ -48,6 +27,27 @@ public sealed class DisposableCollection : IDisposableCollection, IDestructible
 
             DisposablesTracker.Remove(this);
         }
+    }
+
+    public bool IsDisposed { get; private set; }
+
+    public bool Contains(IDisposable? disposable) => disposable != null && m_disposables.Contains(disposable);
+
+    public void Add(IDisposable disposable)
+    {
+        require(disposable != null);
+        require(!Contains(disposable));
+
+        m_disposables.Push(disposable);
+    }
+
+    public void Clear(bool disposeAll)
+    {
+        if (disposeAll)
+            while (m_disposables.Count > 0)
+                m_disposables.Pop().Dispose();
+        else
+            m_disposables.Clear();
     }
 
 

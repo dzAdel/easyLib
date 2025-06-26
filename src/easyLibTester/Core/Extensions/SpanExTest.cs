@@ -19,7 +19,7 @@ sealed class SpanExTest : UnitTest
     //private:
     void TestToEnumerable()
     {
-        int[] ints = SampleFactory.CreateInts().Take(SampleFactory.NextByte).ToArray();
+        int[] ints = [.. SampleFactory.CreateInts().Take(SampleFactory.NextByte)];
         ReadOnlySpan<int> span = new(ints);
         Ensure(span.ToEnumerable().SequenceEqual(ints));
 
@@ -30,14 +30,14 @@ sealed class SpanExTest : UnitTest
     void TestReverseSlice()
     {
         byte[] bits = BitConverter.GetBytes(SampleFactory.NextInt);
-        byte[] bitsReversed = bits.Reverse().ToArray();
+        byte[] bitsReversed = [.. bits.Reverse()];
         bitsReversed.AsSpan().ReverseSlice(sizeof(int));
         Ensure(bits.SequenceEqual(bitsReversed));
 
         int count = SampleFactory.NextByte;
         int[] ints = SampleFactory.CreateInts().Take(count).ToArray();
-        List<byte> bytes = new();
-        List<byte> revBytes = new();
+        List<byte> bytes = [];
+        List<byte> revBytes = [];
 
         for (int i = 0; i < count; ++i)
         {

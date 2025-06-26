@@ -42,13 +42,13 @@ public abstract partial class UnitTest : ITest
 
     protected ITestCleaner Cleaner => m_cleaner ??= new();
 
-    protected void Ensure(bool exp,
+    protected void Ensure(bool expr,
                           [CallerMemberName] string? caller = null,
                           [CallerFilePath] string? file = null,
                           [CallerLineNumber] int line = 0,
-                          [CallerArgumentExpression(nameof(exp))] string? expStr = null)
+                          [CallerArgumentExpression(nameof(expr))] string? expStr = null)
     {
-        if (!exp)
+        if (!expr)
         {
             var res = new AssertionFailureInfo($"{nameof(Ensure)} test failure in {Name}")
             {

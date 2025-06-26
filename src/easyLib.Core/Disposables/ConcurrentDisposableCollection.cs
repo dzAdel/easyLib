@@ -9,6 +9,15 @@ public sealed class ConcurrentDisposableCollection : IDisposableCollection, IDes
         DisposablesTracker.Add(this);
     }
 
+    public void Dispose()
+    {
+        if (!m_disposables.IsDisposed)
+            lock (m_disposables)
+                m_disposables.Dispose();
+
+        DisposablesTracker.Remove(this);
+    }
+
     public bool IsDisposed => m_disposables.IsDisposed;
 
     public bool Contains(IDisposable? disposable)
@@ -32,14 +41,6 @@ public sealed class ConcurrentDisposableCollection : IDisposableCollection, IDes
             m_disposables.Clear(disposeAll);
     }
 
-    public void Dispose()
-    {
-        if (!m_disposables.IsDisposed)
-            lock (m_disposables)
-                m_disposables.Dispose();
-
-        DisposablesTracker.Remove(this);
-    }
 
     //private:
     readonly DisposableCollection m_disposables; //lock

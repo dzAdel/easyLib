@@ -12,16 +12,16 @@ TestManager testManager = new();
 //easyLib.Test
 testManager.AddTest(new SampleFactoryTest());
 
-////easyLib
-//testManager.AddTest(new DisposableCollectionTest());
-//testManager.AddTest(new ConcurrentDisposableCollectionTest());
+//easyLib
+testManager.AddTest(new DisposableCollectionTest());
+testManager.AddTest(new ConcurrentDisposableCollectionTest());
 
-////easyLib.Extensions
-//testManager.AddTest(new ArrayExTest());
-//testManager.AddTest(new TypeExTest());
-//testManager.AddTest(new EnumerableExTest());
-//testManager.AddTest(new SpanExTest());
-//testManager.AddTest(new ListExTest());
+//easyLib.Extensions
+testManager.AddTest(new ArrayExTest());
+testManager.AddTest(new TypeExTest());
+testManager.AddTest(new EnumerableExTest());
+testManager.AddTest(new SpanExTest());
+testManager.AddTest(new ListExTest());
 
 ////easyLib.IO
 //testManager.AddTest(new MultiByteIntCodecTest());
@@ -30,7 +30,7 @@ testManager.AddTest(new SampleFactoryTest());
 
 
 //easyLib.ADT
-testManager.AddTest(new ForwardListTest());
+//testManager.AddTest(new ForwardListTest());
 
 ////easyLib.Addenda
 //testManager.AddTest(new BufferTest());

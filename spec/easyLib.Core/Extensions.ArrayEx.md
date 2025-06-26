@@ -2,7 +2,7 @@
 ```csharp
 static class ArrayEx
 {
-	public static void ReverseSlice(this byte\[] bytes,
+	public static void ReverseSlice(this byte[] bytes,
 		int szSlice, 
 		int sliceCount, 
 		int offset = 0); 
@@ -10,7 +10,7 @@ static class ArrayEx
 	public static ReadOnlySpan 	AsReadOnlySpan(this T[] array, int count, int ndxStart = 0);
 }
 ```
-## AsReadOnlySpan\<T\>(this T[])
+## AsReadOnlySpan< T >(this T[])
 ```csharp
 public static ReadOnlySpan<T> AsReadOnlySpan<T>(this T[] array)
 {
@@ -24,7 +24,7 @@ public static ReadOnlySpan<T> AsReadOnlySpan<T>(this T[] array)
   }
 }
 ```
-## AsReadOnlySpan\<T\>(this T[], int, int)
+## AsReadOnlySpan< T >(this T[], int, int)
 ```csharp
 public static ReadOnlySpan<T> AsReadOnlySpan<T>(this T[] array, int count, int ndxStart = 0)
 {

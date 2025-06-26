@@ -11,9 +11,6 @@ public sealed class AutoReleaser : IDestructible
         DisposablesTracker.Add(this);
     }
 
-    public bool IsDisposed { get; private set; }
-    public static AutoReleaser Empty => m_emptyReleaser ??= new(() => { });
-
     public void Dispose()
     {
         if (!IsDisposed)
@@ -32,6 +29,10 @@ public sealed class AutoReleaser : IDestructible
             DisposablesTracker.Remove(this);
         }
     }
+
+    public bool IsDisposed { get; private set; }
+    public static AutoReleaser Empty => m_emptyReleaser ??= new(() => { });
+
 
     //private:
     static AutoReleaser? m_emptyReleaser;

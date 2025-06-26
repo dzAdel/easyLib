@@ -18,13 +18,13 @@ partial class UnitTest
         public string? SourceFile { get; init; }
         public int LineNumber { get; init; }
 
-        public IInvariantTester this[bool exp,
+        public IInvariantTester this[bool expr,
                                      [CallerLineNumber] int line = 0,
-                                     [CallerArgumentExpression(nameof(exp))] string? testExp = null]
+                                     [CallerArgumentExpression(nameof(expr))] string? testExp = null]
         {
             get
             {
-                if (!exp)
+                if (!expr)
                 {
                     FailureInfo.Expressions.Add((testExp, line));
 
